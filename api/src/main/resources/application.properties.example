@@ -3,8 +3,7 @@ spring.application.name=api
 # Configura a porta da aplicação
 server.port=8888
 
-# Conexão com o banco de dados MongoDB (Atlas)
-spring.mongodb.uri=
-
 # Desabilita (por enquanto) o acesso a banco de dados
-# spring.autoconfigure.exclude=org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
+spring.autoconfigure.exclude=org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
+
+spring.mongodb.uri=
