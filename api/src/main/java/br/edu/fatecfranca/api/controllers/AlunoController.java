@@ -36,6 +36,7 @@ public class AlunoController {
    @GetMapping
    public List<Aluno> listarTodos() {
        return service.listarTodos();
+       
    }
 
 
