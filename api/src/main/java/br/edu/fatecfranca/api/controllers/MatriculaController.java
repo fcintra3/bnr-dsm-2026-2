@@ -38,6 +38,18 @@ public class MatriculaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/aluno/{alunoId}")
+    public List<Matricula> listarPorAluno(
+            @PathVariable String alunoId) {
+
+        return service.listarPorAluno(alunoId);
+    }
+
+    @GetMapping("/turma/{turmaId}")
+    public List<Matricula> listarPorTurma(@PathVariable String turmaId) {
+        return service.listarPorTurma(turmaId);
+    }
+
     @PostMapping
     public ResponseEntity<Matricula> criar(@RequestBody Matricula matricula) {
         Matricula matriculaSalva = service.salvar(matricula);
