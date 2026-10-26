@@ -5,6 +5,14 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Document(collection = "turmas")
 public class Turma {
 
@@ -12,9 +20,24 @@ public class Turma {
     private String id;
     private String cursoId;
     private String instrutorId;
+    
+    @NotNull(message = "A data inicial é obrigatória.")
     private LocalDate inicio;
+
+    @NotNull(message = "A data final é obrigatória.")
     private LocalDate fim;
+
+    @NotNull(message = "O número de vagas é obrigatório.")
+    @Positive(message = "O número de vagas deve ser maior que zero.")
     private Integer vagas;
+
+    @NotBlank(message = "O status é obrigatório.")
+    @Pattern(
+        regexp = "PREVISTA|ATIVA|ENCERRADA|CANCELADA",
+        message = "O status deve ser PREVISTA, ATIVA ou ENCERRADA."
+    )
+    private String status;
+
     private List<Horario> horarios;
 
     public Turma() {
@@ -29,6 +52,20 @@ public class Turma {
         this.vagas = vagas;
         this.horarios = horarios;
     }
+
+    // Como essa validação envolve a comparação entre dois atributos, foi
+    // necessário escrever uma função específica de validação
+    @JsonIgnore
+    @AssertTrue(message = "A data final não pode ser anterior à data inicial.")
+    public boolean isPeriodoValido() {
+        if (inicio == null || fim == null) {
+            return true;
+        }
+
+        return !fim.isBefore(inicio);
+    }
+
+    // (...código existente...)
 
     public String getId() {
         return id;
@@ -84,5 +121,13 @@ public class Turma {
 
     public void setHorarios(List<Horario> horarios) {
         this.horarios = horarios;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

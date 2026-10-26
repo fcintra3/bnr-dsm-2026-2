@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.fatecfranca.api.models.Aluno;
 import br.edu.fatecfranca.api.services.AlunoService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/alunos")
 public class AlunoController {
@@ -39,7 +41,7 @@ public class AlunoController {
     }
 
     @PostMapping
-    public ResponseEntity<Aluno> criar(@RequestBody Aluno aluno) {
+    public ResponseEntity<Aluno> criar(@Valid @RequestBody Aluno aluno) {
         Aluno alunoSalvo = service.salvar(aluno);
 
         return ResponseEntity
@@ -50,7 +52,7 @@ public class AlunoController {
     @PutMapping("/{id}")
     public ResponseEntity<Aluno> atualizar(
             @PathVariable String id,
-            @RequestBody Aluno aluno) {
+            @Valid @RequestBody Aluno aluno) {
 
         if (service.buscarPorId(id).isEmpty()) {
             return ResponseEntity.notFound().build();

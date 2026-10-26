@@ -17,6 +17,8 @@ import br.edu.fatecfranca.api.dtos.TurmaResponse;
 import br.edu.fatecfranca.api.models.Turma;
 import br.edu.fatecfranca.api.services.TurmaService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/turmas")
 public class TurmaController {
@@ -47,7 +49,7 @@ public class TurmaController {
     }
 
     @PostMapping
-    public ResponseEntity<Turma> criar(@RequestBody Turma turma) {
+    public ResponseEntity<Turma> criar(@Valid @RequestBody Turma turma) {
         Turma turmaSalva = service.salvar(turma);
 
         return ResponseEntity
@@ -58,7 +60,7 @@ public class TurmaController {
     @PutMapping("/{id}")
     public ResponseEntity<Turma> atualizar(
             @PathVariable String id,
-            @RequestBody Turma turma) {
+            @Valid @RequestBody Turma turma) {
 
         if (service.buscarPorId(id).isEmpty()) {
             return ResponseEntity.notFound().build();
