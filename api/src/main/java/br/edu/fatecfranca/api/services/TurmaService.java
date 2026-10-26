@@ -7,8 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import br.edu.fatecfranca.api.dtos.TurmaResponse;
+
+import br.edu.fatecfranca.api.models.Curso;
+import br.edu.fatecfranca.api.models.Instrutor;
 import br.edu.fatecfranca.api.models.Turma;
 import br.edu.fatecfranca.api.repositories.CursoRepository;
+import br.edu.fatecfranca.api.repositories.InstrutorRepository;
 import br.edu.fatecfranca.api.repositories.MatriculaRepository;
 import br.edu.fatecfranca.api.repositories.TurmaRepository;
 
@@ -17,14 +22,63 @@ public class TurmaService {
 
     private final TurmaRepository repository;
     private final CursoRepository cursoRepository;
+    private final InstrutorRepository instrutorRepository;
     private final MatriculaRepository matriculaRepository;
 
-    public TurmaService(TurmaRepository repository, CursoRepository cursoRepository,
-            MatriculaRepository matriculaRepository) {
+    public TurmaService(
+            TurmaRepository repository, 
+            CursoRepository cursoRepository, 
+            InstrutorRepository instrutorRepository,
+            MatriculaRepository matriculaRepository
+        ) {
         this.repository = repository;
         this.cursoRepository = cursoRepository;
+        this.instrutorRepository = instrutorRepository;
         this.matriculaRepository = matriculaRepository;
     }
+
+    // Este método monta uma resposta para o GET de /turmas
+    // incluindo os dados de curso e instrutor
+    private TurmaResponse montarResposta(Turma turma) {
+        Curso curso = cursoRepository.findById(turma.getCursoId())
+                .orElse(null);
+
+        Instrutor instrutor = turma.getInstrutorId() == null
+                || turma.getInstrutorId().isBlank()
+                ? null
+                : instrutorRepository.findById(turma.getInstrutorId())
+                        .orElse(null);
+
+        return new TurmaResponse(
+                turma.getId(),
+                turma.getCursoId(),
+                turma.getInstrutorId(),
+                turma.getInicio(),
+                turma.getFim(),
+                turma.getVagas(),
+                turma.getHorarios(),
+                curso,
+                instrutor);
+    }
+
+    public List<TurmaResponse> listarComDetalhes() {
+        return repository.findAll().stream()
+                .map(this::montarResposta)
+                .toList();
+    }
+
+    public Optional<TurmaResponse> buscarComDetalhes(String id) {
+        return repository.findById(id)
+                .map(this::montarResposta);
+    }
+
+    public List<TurmaResponse> listarPorCursoComDetalhes(String cursoId) {
+        return listarPorCurso(cursoId).stream()
+                .map(this::montarResposta)
+                .toList();
+    }
+
+    // (...código existente...)
 
     private void verificarCurso(String cursoId) {
         if (cursoId == null || cursoId.isBlank()) {
