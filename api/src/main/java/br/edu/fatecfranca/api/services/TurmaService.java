@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.edu.fatecfranca.api.dtos.TurmaResponse;
-
 import br.edu.fatecfranca.api.models.Curso;
 import br.edu.fatecfranca.api.models.Instrutor;
 import br.edu.fatecfranca.api.models.Turma;
@@ -26,28 +25,52 @@ public class TurmaService {
     private final MatriculaRepository matriculaRepository;
 
     public TurmaService(
-            TurmaRepository repository, 
-            CursoRepository cursoRepository, 
+            TurmaRepository repository,
+            CursoRepository cursoRepository,
             InstrutorRepository instrutorRepository,
-            MatriculaRepository matriculaRepository
-        ) {
+            MatriculaRepository matriculaRepository) {
         this.repository = repository;
         this.cursoRepository = cursoRepository;
         this.instrutorRepository = instrutorRepository;
         this.matriculaRepository = matriculaRepository;
     }
 
-    // Este método monta uma resposta para o GET de /turmas
-    // incluindo os dados de curso e instrutor
-    private TurmaResponse montarResposta(Turma turma) {
-        Curso curso = cursoRepository.findById(turma.getCursoId())
-                .orElse(null);
+    private void verificarCurso(String cursoId) {
+        if (cursoId == null || cursoId.isBlank()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "O identificador do curso é obrigatório.");
+        }
 
-        Instrutor instrutor = turma.getInstrutorId() == null
-                || turma.getInstrutorId().isBlank()
-                ? null
-                : instrutorRepository.findById(turma.getInstrutorId())
-                        .orElse(null);
+        if (!cursoRepository.existsById(cursoId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Curso não encontrado.");
+        }
+    }
+
+    private void verificarInstrutor(String instrutorId) {
+        if (instrutorId == null || instrutorId.isBlank()) {
+            return;
+        }
+
+        if (!instrutorRepository.existsById(instrutorId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Instrutor não encontrado.");
+        }
+    }
+
+    private TurmaResponse montarResposta(Turma turma) {
+        Curso curso = null;
+        if (turma.getCursoId() != null && !turma.getCursoId().isBlank()) {
+            curso = cursoRepository.findById(turma.getCursoId()).orElse(null);
+        }
+
+        Instrutor instrutor = null;
+        if (turma.getInstrutorId() != null && !turma.getInstrutorId().isBlank()) {
+            instrutor = instrutorRepository.findById(turma.getInstrutorId()).orElse(null);
+        }
 
         return new TurmaResponse(
                 turma.getId(),
@@ -68,25 +91,26 @@ public class TurmaService {
     }
 
     public Optional<TurmaResponse> buscarComDetalhes(String id) {
-        return repository.findById(id)
-                .map(this::montarResposta);
+        return repository.findById(id).map(this::montarResposta);
     }
 
     public List<TurmaResponse> listarPorCursoComDetalhes(String cursoId) {
-        return listarPorCurso(cursoId).stream()
+        verificarCurso(cursoId);
+        return repository.findByCursoId(cursoId).stream()
                 .map(this::montarResposta)
                 .toList();
     }
 
-    // (...código existente...)
-
-    private void verificarCurso(String cursoId) {
-        if (cursoId == null || cursoId.isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O identificador do curso é obrigatório.");
+    public List<TurmaResponse> listarPorInstrutorComDetalhes(String instrutorId) {
+        if (instrutorId == null || instrutorId.isBlank()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "O identificador do instrutor é obrigatório.");
         }
-        if (!cursoRepository.existsById(cursoId)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso não encontrado.");
-        }
+        verificarInstrutor(instrutorId);
+        return repository.findByInstrutorId(instrutorId).stream()
+                .map(this::montarResposta)
+                .toList();
     }
 
     public List<Turma> listarTodos() {
@@ -102,19 +126,35 @@ public class TurmaService {
         return repository.findByCursoId(cursoId);
     }
 
+    public List<Turma> listarPorInstrutor(String instrutorId) {
+        if (instrutorId == null || instrutorId.isBlank()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "O identificador do instrutor é obrigatório.");
+        }
+        verificarInstrutor(instrutorId);
+        return repository.findByInstrutorId(instrutorId);
+    }
+
     public Turma salvar(Turma turma) {
         verificarCurso(turma.getCursoId());
+        verificarInstrutor(turma.getInstrutorId());
         return repository.save(turma);
     }
 
     public void excluir(String id) {
         if (!repository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Turma não encontrada.");
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Turma não encontrada.");
         }
+
         if (matriculaRepository.existsByTurmaId(id)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
                     "Não é possível excluir uma turma com matrículas vinculadas.");
         }
+
         repository.deleteById(id);
     }
 }

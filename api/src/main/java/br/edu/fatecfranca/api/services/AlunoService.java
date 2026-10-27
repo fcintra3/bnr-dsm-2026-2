@@ -17,7 +17,9 @@ public class AlunoService {
     private final AlunoRepository repository;
     private final MatriculaRepository matriculaRepository;
 
-    public AlunoService(AlunoRepository repository, MatriculaRepository matriculaRepository) {
+    public AlunoService(
+            AlunoRepository repository,
+            MatriculaRepository matriculaRepository) {
         this.repository = repository;
         this.matriculaRepository = matriculaRepository;
     }
@@ -33,7 +35,6 @@ public class AlunoService {
     public Aluno salvar(Aluno aluno) {
         return repository.save(aluno);
     }
-
 
     public void excluir(String id) {
         if (!repository.existsById(id)) {

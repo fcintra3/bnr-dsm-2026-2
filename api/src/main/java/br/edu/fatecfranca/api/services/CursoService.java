@@ -17,7 +17,9 @@ public class CursoService {
     private final CursoRepository repository;
     private final TurmaRepository turmaRepository;
 
-    public CursoService(CursoRepository repository, TurmaRepository turmaRepository) {
+    public CursoService(
+            CursoRepository repository,
+            TurmaRepository turmaRepository) {
         this.repository = repository;
         this.turmaRepository = turmaRepository;
     }
@@ -36,12 +38,17 @@ public class CursoService {
 
     public void excluir(String id) {
         if (!repository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso não encontrado.");
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Curso não encontrado.");
         }
+
         if (turmaRepository.existsByCursoId(id)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
                     "Não é possível excluir um curso com turmas vinculadas.");
         }
+
         repository.deleteById(id);
     }
 }

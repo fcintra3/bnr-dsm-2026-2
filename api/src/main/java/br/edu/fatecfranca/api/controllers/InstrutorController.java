@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.fatecfranca.api.models.Instrutor;
 import br.edu.fatecfranca.api.services.InstrutorService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/instrutores")
@@ -39,7 +40,7 @@ public class InstrutorController {
     }
 
     @PostMapping
-    public ResponseEntity<Instrutor> criar(@RequestBody Instrutor instrutor) {
+    public ResponseEntity<Instrutor> criar(@Valid @RequestBody Instrutor instrutor) {
         Instrutor instrutorSalvo = service.salvar(instrutor);
 
         return ResponseEntity
@@ -50,7 +51,7 @@ public class InstrutorController {
     @PutMapping("/{id}")
     public ResponseEntity<Instrutor> atualizar(
             @PathVariable String id,
-            @RequestBody Instrutor instrutor) {
+            @Valid @RequestBody Instrutor instrutor) {
 
         if (service.buscarPorId(id).isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -65,11 +66,6 @@ public class InstrutorController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable String id) {
-
-        if (service.buscarPorId(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
         service.excluir(id);
 
         return ResponseEntity.noContent().build();

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.fatecfranca.api.models.Aluno;
 import br.edu.fatecfranca.api.services.AlunoService;
-
 import jakarta.validation.Valid;
 
 @RestController

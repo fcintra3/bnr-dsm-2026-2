@@ -1,25 +1,49 @@
 package br.edu.fatecfranca.api.models;
 
 import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Document(collection = "instrutores")
 public class Instrutor {
 
     @Id
     private String id;
+
+    @NotBlank(message = "O nome é obrigatório.")
     private String nome;
+
+    @NotBlank(message = "O CPF é obrigatório.")
+    @CPF(message = "O CPF informado é inválido.")
     private String cpf;
+
     private String telefone;
+
+    @NotBlank(message = "O e-mail é obrigatório.")
+    @Email(message = "O e-mail informado é inválido.")
     private String email;
+
     private List<String> especialidades;
-    private List<Endereco> enderecos;
+
+    private List<@Valid Endereco> enderecos;
 
     public Instrutor() {
     }
 
-    public Instrutor(String id, String nome, String cpf, String telefone, String email, List<String> especialidades, List<Endereco> enderecos) {
+    public Instrutor(
+            String id,
+            String nome,
+            String cpf,
+            String telefone,
+            String email,
+            List<String> especialidades,
+            List<Endereco> enderecos) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;

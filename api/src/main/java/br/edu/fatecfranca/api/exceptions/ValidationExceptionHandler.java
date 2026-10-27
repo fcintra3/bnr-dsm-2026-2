@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,21 +15,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ValidationExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, List<String>>> tratarValidacao(
-            MethodArgumentNotValidException exception) {
+    public ResponseEntity<Map<String, List<String>>> tratarErrosDeValidacao(
+            MethodArgumentNotValidException ex) {
 
         Map<String, List<String>> erros = new LinkedHashMap<>();
 
-        for (var erro : exception.getBindingResult().getFieldErrors()) {
-            String campo = erro.getField();
+        ex.getBindingResult().getFieldErrors().forEach(erro -> {
+            erros.computeIfAbsent(erro.getField(), campo -> new ArrayList<>())
+                    .add(erro.getDefaultMessage());
+        });
 
-            if (!erros.containsKey(campo)) {
-                erros.put(campo, new ArrayList<>());
-            }
-
-            erros.get(campo).add(erro.getDefaultMessage());
-        }
-
-        return ResponseEntity.badRequest().body(erros);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erros);
     }
 }

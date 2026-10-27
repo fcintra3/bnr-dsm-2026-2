@@ -23,4 +23,5 @@
 hs_err_pid*
 replay_pid*
 
+# Arquivo de configuração com dados sensíveis (string de conexão)
 **/application.properties

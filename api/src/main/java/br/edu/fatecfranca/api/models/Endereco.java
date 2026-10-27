@@ -1,11 +1,25 @@
 package br.edu.fatecfranca.api.models;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
 public class Endereco {
 
+    @NotBlank(message = "O logradouro é obrigatório.")
     private String logradouro;
+
+    @NotBlank(message = "O número é obrigatório.")
     private String numero;
+
+    @NotBlank(message = "O município é obrigatório.")
     private String municipio;
+
+    @NotBlank(message = "A UF é obrigatória.")
+    @Pattern(regexp = "^[A-Za-z]{2}$", message = "A UF deve conter duas letras.")
     private String uf;
+
+    @NotBlank(message = "O CEP é obrigatório.")
+    @Pattern(regexp = "^\\d{5}-?\\d{3}$", message = "O CEP deve conter 8 dígitos.")
     private String cep;
 
     public Endereco() {
@@ -63,7 +77,4 @@ public class Endereco {
     public void setCep(String cep) {
         this.cep = cep;
     }
-
-    //*
-
 }
