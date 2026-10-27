@@ -1,8 +1,6 @@
 package br.edu.fatecfranca.api.controllers;
 
-
 import java.util.List;
-
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,75 +13,61 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import br.edu.fatecfranca.api.models.Aluno;
 import br.edu.fatecfranca.api.services.AlunoService;
-
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/alunos")
 public class AlunoController {
 
+    private final AlunoService service;
 
-   private final AlunoService service;
+    public AlunoController(AlunoService service) {
+        this.service = service;
+    }
 
+    @GetMapping
+    public List<Aluno> listarTodos() {
+        return service.listarTodos();
+    }
 
-   public AlunoController(AlunoService service) {
-       this.service = service;
-   }
+    @GetMapping("/{id}")
+    public ResponseEntity<Aluno> buscarPorId(@PathVariable String id) {
+        return service.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
+    @PostMapping
+    public ResponseEntity<Aluno> criar(@Valid @RequestBody Aluno aluno) {
+        Aluno alunoSalvo = service.salvar(aluno);
 
-   @GetMapping
-   public List<Aluno> listarTodos() {
-       return service.listarTodos();
-   }
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(alunoSalvo);
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Aluno> atualizar(
+            @PathVariable String id,
+            @Valid @RequestBody Aluno aluno) {
 
-   @GetMapping("/{id}")
-   public ResponseEntity<Aluno> buscarPorId(@PathVariable String id) {
-       return service.buscarPorId(id)
-               .map(ResponseEntity::ok)
-               .orElse(ResponseEntity.notFound().build());
-   }
+        if (service.buscarPorId(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
 
+        aluno.setId(id);
 
-   @PostMapping
-   public ResponseEntity<Aluno> criar(@RequestBody Aluno aluno) {
-       Aluno alunoSalvo = service.salvar(aluno);
+        Aluno alunoAtualizado = service.salvar(aluno);
 
+        return ResponseEntity.ok(alunoAtualizado);
+    }
 
-       return ResponseEntity
-               .status(HttpStatus.CREATED)
-               .body(alunoSalvo);
-   }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable String id) {
+        service.excluir(id);
 
-
-   @PutMapping("/{id}")
-   public ResponseEntity<Aluno> atualizar(
-           @PathVariable String id,
-           @RequestBody Aluno aluno) {
-
-
-       if (service.buscarPorId(id).isEmpty()) {
-           return ResponseEntity.notFound().build();
-       }
-
-
-       aluno.setId(id);
-
-
-       Aluno alunoAtualizado = service.salvar(aluno);
-
-
-       return ResponseEntity.ok(alunoAtualizado);
-   }
-
-
-   @DeleteMapping("/{id}")
-   public ResponseEntity<Void> excluir(@PathVariable String id) {
-       service.excluir(id);
-
-
-       return ResponseEntity.noContent().build();
-   }
+        return ResponseEntity.noContent().build();
+    }
 }

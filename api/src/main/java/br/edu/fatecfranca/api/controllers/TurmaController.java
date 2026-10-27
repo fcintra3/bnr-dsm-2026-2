@@ -1,8 +1,6 @@
 package br.edu.fatecfranca.api.controllers;
 
-
 import java.util.List;
-
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,89 +13,74 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import br.edu.fatecfranca.api.dtos.TurmaResponse;
 import br.edu.fatecfranca.api.models.Turma;
 import br.edu.fatecfranca.api.services.TurmaService;
-
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/turmas")
 public class TurmaController {
 
+    private final TurmaService service;
 
-   private final TurmaService service;
+    public TurmaController(TurmaService service) {
+        this.service = service;
+    }
 
+    @GetMapping
+    public List<TurmaResponse> listarTodos() {
+        return service.listarComDetalhes();
+    }
 
-   public TurmaController(TurmaService service) {
-       this.service = service;
-   }
+    @GetMapping("/{id}")
+    public ResponseEntity<TurmaResponse> buscarPorId(@PathVariable String id) {
+        return service.buscarComDetalhes(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
+    @GetMapping("/curso/{cursoId}")
+    public List<TurmaResponse> listarPorCurso(@PathVariable String cursoId) {
+        return service.listarPorCursoComDetalhes(cursoId);
+    }
 
-   @GetMapping
-   public List<Turma> listarTodos() {
-       return service.listarTodos();
-   }
+    @GetMapping("/instrutor/{instrutorId}")
+    public List<TurmaResponse> listarPorInstrutor(
+            @PathVariable String instrutorId) {
 
+        return service.listarPorInstrutorComDetalhes(instrutorId);
+    }
 
-   @GetMapping("/{id}")
-   public ResponseEntity<Turma> buscarPorId(@PathVariable String id) {
-       return service.buscarPorId(id)
-               .map(ResponseEntity::ok)
-               .orElse(ResponseEntity.notFound().build());
-   }
+    @PostMapping
+    public ResponseEntity<Turma> criar(@Valid @RequestBody Turma turma) {
+        Turma turmaSalva = service.salvar(turma);
 
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(turmaSalva);
+    }
 
-   @GetMapping("/curso/{cursoId}")
-   public List<Turma> listarPorCurso(@PathVariable String cursoId) {
-       return service.listarPorCurso(cursoId);
-   }
+    @PutMapping("/{id}")
+    public ResponseEntity<Turma> atualizar(
+            @PathVariable String id,
+            @Valid @RequestBody Turma turma) {
 
+        if (service.buscarPorId(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
 
-   @GetMapping("/instrutor/{instrutorId}")
-   public List<Turma> listarPorInstrutor(
-           @PathVariable String instrutorId) {
+        turma.setId(id);
 
-       return service.listarPorInstrutor(instrutorId);
-   }
+        Turma turmaAtualizada = service.salvar(turma);
 
+        return ResponseEntity.ok(turmaAtualizada);
+    }
 
-   @PostMapping
-   public ResponseEntity<Turma> criar(@RequestBody Turma turma) {
-       Turma turmaSalva = service.salvar(turma);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable String id) {
+        service.excluir(id);
 
-
-       return ResponseEntity
-               .status(HttpStatus.CREATED)
-               .body(turmaSalva);
-   }
-
-
-   @PutMapping("/{id}")
-   public ResponseEntity<Turma> atualizar(
-           @PathVariable String id,
-           @RequestBody Turma turma) {
-
-
-       if (service.buscarPorId(id).isEmpty()) {
-           return ResponseEntity.notFound().build();
-       }
-
-
-       turma.setId(id);
-
-
-       Turma turmaAtualizada = service.salvar(turma);
-
-
-       return ResponseEntity.ok(turmaAtualizada);
-   }
-
-
-   @DeleteMapping("/{id}")
-   public ResponseEntity<Void> excluir(@PathVariable String id) {
-       service.excluir(id);
-
-
-       return ResponseEntity.noContent().build();
-   }
+        return ResponseEntity.noContent().build();
+    }
 }

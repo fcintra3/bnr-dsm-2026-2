@@ -8,17 +8,31 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+
 @Document(collection = "cursos")
 public class Curso {
 
     @Id
     private String id;
+
+    @NotBlank(message = "O nome do curso é obrigatório.")
     private String nome;
+
+    @NotNull(message = "A carga horária é obrigatória.")
+    @Positive(message = "A carga horária deve ser maior que zero.")
     private Integer cargaHoraria;
 
+    @NotNull(message = "O valor do curso é obrigatório.")
+    @PositiveOrZero(message = "O valor do curso não pode ser negativo.")
     @Field(targetType = FieldType.DECIMAL128)
     private BigDecimal valor;
-    private List<Modulo> modulos;
+
+    private List<@Valid Modulo> modulos;
 
     public Curso() {
     }
