@@ -64,10 +64,10 @@ public class AlunoController {
         return ResponseEntity.ok(alunoAtualizado);
     }
 
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable String id) {
         service.excluir(id);
-
         return ResponseEntity.noContent().build();
     }
 }
