@@ -2,6 +2,12 @@ package br.edu.fatecfranca.api.models;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.br.CPF;
+import jakarta.validation.constraints.NotEmpty;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,11 +17,24 @@ public class Instrutor {
     @Id
     private String id;
 
-    private String nome;
-    private String cpf;
-    private String telefone;
-    private String email;
+@NotBlank(message = "O nome é obrigatório.")
+private String nome;
+
+@NotBlank(message = "O CPF é obrigatório.")
+@CPF(message = "O CPF informado é inválido.")
+private String cpf;
+
+@NotBlank(message = "O telefone é obrigatório.")
+private String telefone;
+
+@NotBlank(message = "O e-mail é obrigatório.")
+@Email(message = "O e-mail informado é inválido.")
+private String email;
+
+    @NotEmpty(message = "Informe pelo menos uma especialidade.")
     private List<String> especialidades;
+    
+    @Valid
     private List<Endereco> enderecos;
 
     public Instrutor() {

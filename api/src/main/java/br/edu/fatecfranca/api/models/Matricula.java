@@ -1,5 +1,9 @@
 package br.edu.fatecfranca.api.models;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,10 +16,15 @@ public class Matricula {
     @Id
     private String id;
 
+    @NotNull(message = "O ID do aluno é obrigatório.")
     private String alunoId;
+    @NotNull(message = "O ID da turma é obrigatório.")
     private String turmaId;
+    @NotNull(message = "A data da matrícula é obrigatória.")
     private LocalDate data;
+    @NotBlank(message = "A situação da matrícula é obrigatória.")
     private String situacao;
+    @Valid
     private List<Nota> notas;
 
     public Matricula() {

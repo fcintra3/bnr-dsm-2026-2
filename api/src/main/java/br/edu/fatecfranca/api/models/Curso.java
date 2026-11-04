@@ -3,8 +3,14 @@ package br.edu.fatecfranca.api.models;
 import java.math.BigDecimal;
 import java.util.List;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.validation.constraints.NotEmpty;
 
 @Document(collection = "cursos")
 public class Curso {
@@ -12,10 +18,20 @@ public class Curso {
     @Id
     private String id;
 
-    private String nome;
-    private Integer cargaHoraria;
-    private BigDecimal valor;
-    private List<Modulo> modulos;
+@NotBlank(message = "O nome do curso é obrigatório.")
+private String nome;
+
+@NotNull(message = "A carga horária do curso é obrigatória.")
+@Positive(message = "A carga horária do curso deve ser maior que zero.")
+private Integer cargaHoraria;
+
+@NotNull(message = "O valor do curso é obrigatório.")
+@Positive(message = "O valor do curso deve ser maior que zero.")
+private BigDecimal valor;
+
+@NotEmpty(message = "Informe pelo menos um módulo.")
+@Valid
+private List<Modulo> modulos;
 
     public Curso() {
     }

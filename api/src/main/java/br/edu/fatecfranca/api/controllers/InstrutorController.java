@@ -2,6 +2,8 @@ package br.edu.fatecfranca.api.controllers;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,7 +44,7 @@ public class InstrutorController {
 
     @PostMapping
     public ResponseEntity<Instrutor> criar(
-            @RequestBody Instrutor instrutor) {
+            @Valid @RequestBody Instrutor instrutor) {
 
         Instrutor instrutorSalvo = service.salvar(instrutor);
 
@@ -54,7 +56,7 @@ public class InstrutorController {
     @PutMapping("/{id}")
     public ResponseEntity<Instrutor> atualizar(
             @PathVariable String id,
-            @RequestBody Instrutor instrutor) {
+            @Valid @RequestBody Instrutor instrutor) {
 
         if (service.buscarPorId(id).isEmpty()) {
             return ResponseEntity.notFound().build();

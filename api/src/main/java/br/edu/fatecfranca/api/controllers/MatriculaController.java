@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
 
+import br.edu.fatecfranca.api.dtos.MatriculaResponse;
 import br.edu.fatecfranca.api.models.Matricula;
 import br.edu.fatecfranca.api.services.MatriculaService;
 
@@ -27,36 +29,36 @@ public class MatriculaController {
     }
 
     @GetMapping
-    public List<Matricula> listarTodos() {
-        return service.listarTodos();
+    public List<MatriculaResponse> listarTodos() {
+        return service.listarComDetalhes();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Matricula> buscarPorId(
+    public ResponseEntity<MatriculaResponse> buscarPorId(
             @PathVariable String id) {
 
-        return service.buscarPorId(id)
+        return service.buscarComDetalhes(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/aluno/{alunoId}")
-    public List<Matricula> listarPorAluno(
+    public List<MatriculaResponse> listarPorAluno(
             @PathVariable String alunoId) {
 
-        return service.listarPorAluno(alunoId);
+        return service.listarPorAlunoComDetalhes(alunoId);
     }
 
     @GetMapping("/turma/{turmaId}")
-    public List<Matricula> listarPorTurma(
+    public List<MatriculaResponse> listarPorTurma(
             @PathVariable String turmaId) {
 
-        return service.listarPorTurma(turmaId);
+        return service.listarPorTurmaComDetalhes(turmaId);
     }
 
     @PostMapping
     public ResponseEntity<Matricula> criar(
-            @RequestBody Matricula matricula) {
+            @Valid @RequestBody Matricula matricula) {
 
         Matricula matriculaSalva = service.salvar(matricula);
 
@@ -68,14 +70,13 @@ public class MatriculaController {
     @PutMapping("/{id}")
     public ResponseEntity<Matricula> atualizar(
             @PathVariable String id,
-            @RequestBody Matricula matricula) {
+            @Valid @RequestBody Matricula matricula) {
 
         if (service.buscarPorId(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
         matricula.setId(id);
-
         Matricula matriculaAtualizada = service.salvar(matricula);
 
         return ResponseEntity.ok(matriculaAtualizada);
@@ -90,7 +91,6 @@ public class MatriculaController {
         }
 
         service.excluir(id);
-
         return ResponseEntity.noContent().build();
     }
 }
