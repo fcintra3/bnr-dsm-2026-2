@@ -44,6 +44,11 @@ public class MatriculaController {
         return service.listarPorTurmaComDetalhes(turmaId);
     }
 
+    @GetMapping("/curso/{cursoId}")
+    public List<MatriculaResponse> listarPorCurso(@PathVariable String cursoId) {
+        return service.listarPorCursoComDetalhes(cursoId);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<MatriculaResponse> buscarPorId(@PathVariable String id) {
         return service.buscarComDetalhes(id)

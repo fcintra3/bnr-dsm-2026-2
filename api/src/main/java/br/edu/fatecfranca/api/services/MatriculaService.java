@@ -12,6 +12,7 @@ import br.edu.fatecfranca.api.models.Aluno;
 import br.edu.fatecfranca.api.models.Matricula;
 import br.edu.fatecfranca.api.models.Turma;
 import br.edu.fatecfranca.api.repositories.AlunoRepository;
+import br.edu.fatecfranca.api.repositories.CursoRepository;
 import br.edu.fatecfranca.api.repositories.MatriculaRepository;
 import br.edu.fatecfranca.api.repositories.TurmaRepository;
 
@@ -21,14 +22,17 @@ public class MatriculaService {
     private final MatriculaRepository repository;
     private final AlunoRepository alunoRepository;
     private final TurmaRepository turmaRepository;
+    private final CursoRepository cursoRepository;
 
     public MatriculaService(
             MatriculaRepository repository,
             AlunoRepository alunoRepository,
-            TurmaRepository turmaRepository) {
+            TurmaRepository turmaRepository,
+            CursoRepository cursoRepository) {
         this.repository = repository;
         this.alunoRepository = alunoRepository;
         this.turmaRepository = turmaRepository;
+        this.cursoRepository = cursoRepository;
     }
 
     private void verificarAluno(String alunoId) {
@@ -56,6 +60,14 @@ public class MatriculaService {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     "Turma não encontrada.");
+        }
+    }
+
+    private void verificarCurso(String cursoId) {
+        if (!cursoRepository.existsById(cursoId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Curso não encontrado.");
         }
     }
 
@@ -98,6 +110,20 @@ public class MatriculaService {
 
     public List<MatriculaResponse> listarPorTurmaComDetalhes(String turmaId) {
         return listarPorTurma(turmaId).stream()
+                .map(this::montarResposta)
+                .toList();
+    }
+
+    // Matrículas de um curso: busca as turmas do curso
+    // e depois as matrículas dessas turmas
+    public List<MatriculaResponse> listarPorCursoComDetalhes(String cursoId) {
+        verificarCurso(cursoId);
+
+        List<String> turmaIds = turmaRepository.findByCursoId(cursoId).stream()
+                .map(Turma::getId)
+                .toList();
+
+        return repository.findByTurmaIdIn(turmaIds).stream()
                 .map(this::montarResposta)
                 .toList();
     }
