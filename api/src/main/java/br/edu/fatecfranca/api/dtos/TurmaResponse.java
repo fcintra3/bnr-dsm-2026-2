@@ -12,6 +12,7 @@ public record TurmaResponse(
         LocalDate inicio,
         LocalDate fim,
         Integer vagas,
+        String status,
         List<Horario> horarios,
         Curso curso,
         Instrutor instrutor) {

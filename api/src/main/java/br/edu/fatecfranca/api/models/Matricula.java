@@ -3,6 +3,10 @@ package br.edu.fatecfranca.api.models;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,12 +16,21 @@ public class Matricula {
     @Id
     private String id;
 
+    // Vínculos com outras coleções
+    @NotBlank(message = "O aluno é obrigatório.")
     private String alunoId;
 
+    @NotBlank(message = "A turma é obrigatória.")
     private String turmaId;
 
+    @NotNull(message = "A data da matrícula é obrigatória.")
     private LocalDate data;
 
+    @NotBlank(message = "O status é obrigatório.")
+    @Pattern(
+        regexp = "ATIVA|CANCELADA|CONCLUIDA",
+        message = "O status deve ser ATIVA, CANCELADA ou CONCLUIDA."
+    )
     private String situacao;
 
     private List<Nota> notas;

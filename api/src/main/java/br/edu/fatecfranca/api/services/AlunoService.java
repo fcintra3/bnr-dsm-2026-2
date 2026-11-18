@@ -34,7 +34,6 @@ public class AlunoService {
         return repository.save(aluno);
     }
 
-
     public void excluir(String id) {
         if (!repository.existsById(id)) {
             throw new ResponseStatusException(

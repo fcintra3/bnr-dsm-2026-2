@@ -3,9 +3,7 @@ package br.edu.fatecfranca.api.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import br.edu.fatecfranca.api.models.Instrutor;
 import br.edu.fatecfranca.api.repositories.InstrutorRepository;
@@ -32,9 +30,6 @@ public class InstrutorService {
     }
 
     public void excluir(String id) {
-        if (!repository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Instrutor não encontrado.");
-        }
         repository.deleteById(id);
     }
 }

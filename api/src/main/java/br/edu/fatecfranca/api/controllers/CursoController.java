@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.fatecfranca.api.models.Curso;
@@ -29,6 +30,11 @@ public class CursoController {
     @GetMapping
     public List<Curso> listarTodos() {
         return service.listarTodos();
+    }
+
+    @GetMapping("/buscar")
+    public List<Curso> buscarPorNome(@RequestParam String nome) {
+        return service.buscarPorNome(nome);
     }
 
     @GetMapping("/{id}")

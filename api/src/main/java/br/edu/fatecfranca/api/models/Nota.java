@@ -3,15 +3,12 @@ package br.edu.fatecfranca.api.models;
 public class Nota {
 
     private String avaliacao;
-
     private Double valor;
 
     public Nota() {
     }
 
-    public Nota(
-            String avaliacao,
-            Double valor) {
+    public Nota(String avaliacao, Double valor) {
         this.avaliacao = avaliacao;
         this.valor = valor;
     }

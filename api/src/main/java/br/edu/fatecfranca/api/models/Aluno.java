@@ -2,12 +2,12 @@ package br.edu.fatecfranca.api.models;
 
 import java.util.List;
 
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import org.hibernate.validator.constraints.br.CPF;
 
 @Document(collection = "alunos")
 public class Aluno {
@@ -24,20 +24,16 @@ public class Aluno {
 
     @NotBlank(message = "O telefone é obrigatório.")
     private String telefone;
-    
+
     @NotBlank(message = "O e-mail é obrigatório.")
-    @Email(message = "O e-mail informado é inválido.")  
+    @Email(message = "O e-mail informado é inválido.")
     private String email;
 
     private List<Endereco> enderecos;
 
-    // (...código existente...)
-
-    // Construtor genérico
     public Aluno() {
     }
 
-    // Construtor personalizado completo, com todos os atributos
     public Aluno(
             String id,
             String nome,
@@ -53,53 +49,21 @@ public class Aluno {
         this.enderecos = enderecos;
     }
 
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public String getNome() {
-        return nome;
-    }
+    public String getCpf() { return cpf; }
+    public void setCpf(String cpf) { this.cpf = cpf; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public String getTelefone() { return telefone; }
+    public void setTelefone(String telefone) { this.telefone = telefone; }
 
-    public String getCpf() {
-        return cpf;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public List<Endereco> getEnderecos() {
-        return enderecos;
-    }
-
-    public void setEnderecos(List<Endereco> enderecos) {
-        this.enderecos = enderecos;
-    }
-
-    //*
+    public List<Endereco> getEnderecos() { return enderecos; }
+    public void setEnderecos(List<Endereco> enderecos) { this.enderecos = enderecos; }
 }

@@ -10,10 +10,10 @@ public interface MatriculaRepository
         extends MongoRepository<Matricula, String> {
 
     List<Matricula> findByAlunoId(String alunoId);
+    
+    List<Matricula> findByTurmaIdIn(List<String> turmaIds);
 
     boolean existsByAlunoId(String alunoId);
-
-    List<Matricula> findByTurmaId(String turmaId);
 
     boolean existsByTurmaId(String turmaId);
 }

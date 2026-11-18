@@ -1,6 +1,7 @@
 package br.edu.fatecfranca.api.models;
 
 import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,17 +10,26 @@ public class Instrutor {
 
     @Id
     private String id;
+
     private String nome;
     private String cpf;
     private String telefone;
     private String email;
     private List<String> especialidades;
+
     private List<Endereco> enderecos;
 
     public Instrutor() {
     }
 
-    public Instrutor(String id, String nome, String cpf, String telefone, String email, List<String> especialidades, List<Endereco> enderecos) {
+    public Instrutor(
+            String id,
+            String nome,
+            String cpf,
+            String telefone,
+            String email,
+            List<String> especialidades,
+            List<Endereco> enderecos) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;

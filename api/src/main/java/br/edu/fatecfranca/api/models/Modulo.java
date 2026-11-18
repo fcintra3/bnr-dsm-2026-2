@@ -1,33 +1,24 @@
 package br.edu.fatecfranca.api.models;
 
 public class Modulo {
-    private String titulo;
-    private String conteudo;
+
+    private String nome;
     private Integer cargaHoraria;
 
     public Modulo() {
     }
 
-    public Modulo(String titulo, String conteudo, Integer cargaHoraria) {
-        this.titulo = titulo;
-        this.conteudo = conteudo;
+    public Modulo(String nome, Integer cargaHoraria) {
+        this.nome = nome;
         this.cargaHoraria = cargaHoraria;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getNome() {
+        return nome;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getConteudo() {
-        return conteudo;
-    }
-
-    public void setConteudo(String conteudo) {
-        this.conteudo = conteudo;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public Integer getCargaHoraria() {
