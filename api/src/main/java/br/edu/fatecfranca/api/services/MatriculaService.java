@@ -14,6 +14,8 @@ import br.edu.fatecfranca.api.models.Turma;
 import br.edu.fatecfranca.api.repositories.AlunoRepository;
 import br.edu.fatecfranca.api.repositories.MatriculaRepository;
 import br.edu.fatecfranca.api.repositories.TurmaRepository;
+import br.edu.fatecfranca.api.repositories.CursoRepository;
+
 
 @Service
 public class MatriculaService {
@@ -21,15 +23,18 @@ public class MatriculaService {
     private final MatriculaRepository repository;
     private final AlunoRepository alunoRepository;
     private final TurmaRepository turmaRepository;
+    private final CursoRepository cursoRepository;
 
-    public MatriculaService(
-            MatriculaRepository repository,
-            AlunoRepository alunoRepository,
-            TurmaRepository turmaRepository) {
-        this.repository = repository;
-        this.alunoRepository = alunoRepository;
-        this.turmaRepository = turmaRepository;
-    }
+        public MatriculaService(
+                MatriculaRepository repository,
+                AlunoRepository alunoRepository,
+                TurmaRepository turmaRepository,
+                CursoRepository cursoRepository) {
+            this.repository = repository;
+            this.alunoRepository = alunoRepository;
+            this.turmaRepository = turmaRepository;
+            this.cursoRepository = cursoRepository;
+        }
 
     private void verificarAluno(String alunoId) {
         if (alunoId == null || alunoId.isBlank()) {
@@ -96,6 +101,24 @@ public class MatriculaService {
 
     public List<MatriculaResponse> listarPorTurmaComDetalhes(String turmaId) {
         return listarPorTurma(turmaId).stream()
+                .map(this::montarResposta)
+                .toList();
+    }
+
+    public List<MatriculaResponse> listarPorCursoComDetalhes(String cursoId) {
+        if (!cursoRepository.existsById(cursoId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Curso não encontrado.");
+        }
+
+        List<String> turmaIds = turmaRepository.findByCursoId(cursoId)
+                .stream()
+                .map(Turma::getId)
+                .toList();
+
+        return repository.findByTurmaIdIn(turmaIds)
+                .stream()
                 .map(this::montarResposta)
                 .toList();
     }
