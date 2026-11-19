@@ -42,6 +42,15 @@ public class MatriculaController {
         return service.listarPorAlunoComDetalhes(alunoId);
     }
 
+
+    @GetMapping("/curso/{cursoId}")
+    public List<MatriculaResponse> listarPorCurso(
+            @PathVariable String cursoId) {
+
+        return service.listarPorCursoComDetalhes(cursoId);
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<MatriculaResponse> buscarPorId(
             @PathVariable String id) {

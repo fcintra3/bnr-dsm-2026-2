@@ -56,6 +56,15 @@ public class MatriculaService {
                 .toList();
     }
 
+
+    public List<MatriculaResponse> listarPorCursoComDetalhes(String cursoId) {
+        return turmaRepository.findByCursoId(cursoId).stream()
+                .flatMap(turma -> repository.findByTurmaId(turma.getId()).stream())
+                .map(this::montarResposta)
+                .toList();
+    }
+
+
     public Optional<MatriculaResponse> buscarComDetalhes(String id) {
         return repository.findById(id)
                 .map(this::montarResposta);
