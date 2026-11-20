@@ -55,6 +55,13 @@ public class MatriculaController {
        return service.listarPorTurma(turmaId);
    }
 
+   @GetMapping("/curso/{cursoId}")
+    public ResponseEntity<List<Matricula>> listarPorCurso(@PathVariable String cursoId) {
+        List<Matricula> matriculas = service.listarPorCurso(cursoId);
+        
+        return ResponseEntity.ok(matriculas);
+    }
+
 
    @GetMapping("/{id}")
    public ResponseEntity<MatriculaResponse> buscarPorId(@PathVariable String id) {

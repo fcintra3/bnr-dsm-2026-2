@@ -72,6 +72,20 @@ public class MatriculaService {
                .toList();
    }
 
+   public List<Matricula> listarPorCurso(String cursoId) {
+        List<Turma> turmasDoCurso = turmaRepository.findByCursoId(cursoId);
+
+        if (turmasDoCurso.isEmpty()) {
+            return List.of();
+        }
+
+        List<String> turmaIds = turmasDoCurso.stream()
+                .map(Turma::getId)
+                .toList();
+
+        return repository.findByTurmaIdIn(turmaIds);
+    }
+
 
 private void verificarAluno(String alunoId) {
        if (alunoId == null || alunoId.isBlank()) {
