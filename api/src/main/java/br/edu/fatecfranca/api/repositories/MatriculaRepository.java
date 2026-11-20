@@ -15,5 +15,7 @@ public interface MatriculaRepository
 
     List<Matricula> findByTurmaId(String turmaId);
 
+    List<Matricula> findByTurmaIdIn(List<String> turmaIds);
+
     boolean existsByTurmaId(String turmaId);
 }

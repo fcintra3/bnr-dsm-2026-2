@@ -36,6 +36,7 @@ Consultas por vínculo:
 
 - `GET /matriculas/aluno/{alunoId}`
 - `GET /matriculas/turma/{turmaId}`
+- `GET /matriculas/curso/{cursoId}`
 - `GET /turmas/curso/{cursoId}`
 
 Essas consultas retornam 200 com a lista (inclusive `[]`) quando a entidade

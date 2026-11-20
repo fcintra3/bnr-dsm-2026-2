@@ -50,6 +50,11 @@ public class MatriculaController {
         return service.listarPorTurmaComDetalhes(turmaId);
     }
 
+    @GetMapping("/curso/{cursoId}")
+    public List<MatriculaResponse> listarPorCurso(@PathVariable String cursoId) {
+        return service.listarPorCursoComDetalhes(cursoId);
+    }
+
     @PostMapping
     public ResponseEntity<Matricula> criar(@Valid @RequestBody Matricula matricula) {
         Matricula matriculaSalva = service.salvar(matricula);

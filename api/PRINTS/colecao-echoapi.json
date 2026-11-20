@@ -1,0 +1,1259 @@
+{
+  "info": {
+    "name": "Trabalho 1 - BNR 2026/2",
+    "description": "Sequência de requisições do Trabalho 1. Execute na ordem. Cada item indica o print esperado.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "00 Preparação",
+      "item": [
+        {
+          "name": "00.1 POST /cursos - criar curso -> 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/cursos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "cursos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"68f1a0000000000000000001\",\n  \"nome\": \"Desenvolvimento de Software Multiplataforma\",\n  \"cargaHoraria\": 2000,\n  \"valor\": 450.0,\n  \"modulos\": [\n    {\n      \"titulo\": \"Banco de Dados Não Relacional\",\n      \"conteudo\": \"Modelagem de documentos e APIs com MongoDB\",\n      \"cargaHoraria\": 80\n    },\n    {\n      \"titulo\": \"Programação Web\",\n      \"conteudo\": \"Front-end e back-end\",\n      \"cargaHoraria\": 120\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "00.2 POST /instrutores - criar instrutor Marcos -> 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/instrutores",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "instrutores"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"68f1a0000000000000000002\",\n  \"nome\": \"Marcos Vinícius Almeida\",\n  \"cpf\": \"11144477735\",\n  \"telefone\": \"(16) 98888-1001\",\n  \"email\": \"marcos.almeida@exemplo.com\",\n  \"especialidades\": [\n    \"MongoDB\",\n    \"Java\",\n    \"APIs REST\"\n  ],\n  \"enderecos\": [\n    {\n      \"logradouro\": \"Rua das Palmeiras\",\n      \"numero\": \"45\",\n      \"municipio\": \"Franca\",\n      \"uf\": \"SP\",\n      \"cep\": \"14400-100\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "00.3 POST /instrutores - criar instrutora Patrícia -> 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/instrutores",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "instrutores"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"68f1a0000000000000000003\",\n  \"nome\": \"Patrícia Helena Souza\",\n  \"cpf\": \"22255588846\",\n  \"telefone\": \"(16) 98888-1002\",\n  \"email\": \"patricia.souza@exemplo.com\",\n  \"especialidades\": [\n    \"Banco de Dados\",\n    \"Engenharia de Software\"\n  ],\n  \"enderecos\": [\n    {\n      \"logradouro\": \"Avenida Brasil\",\n      \"numero\": \"900\",\n      \"municipio\": \"Franca\",\n      \"uf\": \"SP\",\n      \"cep\": \"14401-200\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Alunos",
+      "item": [
+        {
+          "name": "01. POST /alunos - criar aluno (PRINT 01) -> 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/alunos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "alunos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"68f1a0000000000000000010\",\n  \"nome\": \"Richard Santos\",\n  \"cpf\": \"33366699957\",\n  \"telefone\": \"(16) 99123-4567\",\n  \"email\": \"richard.santos@exemplo.com\",\n  \"enderecos\": [\n    {\n      \"logradouro\": \"Rua das Acácias\",\n      \"numero\": \"120\",\n      \"municipio\": \"Franca\",\n      \"uf\": \"SP\",\n      \"cep\": \"14400-000\"\n    },\n    {\n      \"logradouro\": \"Avenida Rio Branco\",\n      \"numero\": \"455\",\n      \"municipio\": \"Franca\",\n      \"uf\": \"SP\",\n      \"cep\": \"14405-100\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02. POST /alunos - dados inválidos (PRINT 02) -> 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/alunos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "alunos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"\",\n  \"cpf\": \"123\",\n  \"telefone\": \"\",\n  \"email\": \"email-invalido\",\n  \"enderecos\": [\n    {\n      \"logradouro\": \"\",\n      \"numero\": \"\",\n      \"municipio\": \"\",\n      \"uf\": \"XX1\",\n      \"cep\": \"abc\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03. POST /alunos - criar Ana (sem print) -> 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/alunos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "alunos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"68f1a0000000000000000011\",\n  \"nome\": \"Ana Beatriz Ferreira\",\n  \"cpf\": \"44477711107\",\n  \"telefone\": \"(16) 99234-5678\",\n  \"email\": \"ana.ferreira@exemplo.com\",\n  \"enderecos\": [\n    {\n      \"logradouro\": \"Rua São Paulo\",\n      \"numero\": \"78\",\n      \"municipio\": \"Batatais\",\n      \"uf\": \"SP\",\n      \"cep\": \"14300-000\"\n    },\n    {\n      \"logradouro\": \"Rua Minas Gerais\",\n      \"numero\": \"210\",\n      \"municipio\": \"Franca\",\n      \"uf\": \"SP\",\n      \"cep\": \"14401-200\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04. POST /alunos - criar Carlos (sem print) -> 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/alunos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "alunos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"68f1a0000000000000000012\",\n  \"nome\": \"Carlos Eduardo Lima\",\n  \"cpf\": \"55588822200\",\n  \"telefone\": \"(16) 99345-6789\",\n  \"email\": \"carlos.lima@exemplo.com\",\n  \"enderecos\": [\n    {\n      \"logradouro\": \"Rua Bahia\",\n      \"numero\": \"33\",\n      \"municipio\": \"Franca\",\n      \"uf\": \"SP\",\n      \"cep\": \"14402-300\"\n    },\n    {\n      \"logradouro\": \"Rua Goiás\",\n      \"numero\": \"14\",\n      \"municipio\": \"Franca\",\n      \"uf\": \"SP\",\n      \"cep\": \"14402-400\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05. GET /alunos - listar (PRINT 03) -> 200",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/alunos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "alunos"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06. PUT /alunos/{id} - atualizar (PRINT 04) -> 200",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/alunos/68f1a0000000000000000010",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "alunos",
+                "68f1a0000000000000000010"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"68f1a0000000000000000010\",\n  \"nome\": \"Richard Santos\",\n  \"cpf\": \"33366699957\",\n  \"telefone\": \"(16) 99777-1234\",\n  \"email\": \"richard.santos@exemplo.com\",\n  \"enderecos\": [\n    {\n      \"logradouro\": \"Rua das Acácias\",\n      \"numero\": \"120\",\n      \"municipio\": \"Franca\",\n      \"uf\": \"SP\",\n      \"cep\": \"14400-000\"\n    },\n    {\n      \"logradouro\": \"Avenida Rio Branco\",\n      \"numero\": \"455\",\n      \"municipio\": \"Franca\",\n      \"uf\": \"SP\",\n      \"cep\": \"14405-100\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Turmas",
+      "item": [
+        {
+          "name": "07. POST /turmas - criar turma A (PRINT 05) -> 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/turmas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "turmas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"68f1a0000000000000000020\",\n  \"cursoId\": \"68f1a0000000000000000001\",\n  \"instrutorId\": \"68f1a0000000000000000002\",\n  \"inicio\": \"2026-08-10\",\n  \"fim\": \"2026-12-18\",\n  \"vagas\": 40,\n  \"status\": \"ATIVA\",\n  \"horarios\": [\n    {\n      \"diaSemana\": \"Segunda-feira\",\n      \"inicio\": \"19:00\",\n      \"fim\": \"22:00\"\n    },\n    {\n      \"diaSemana\": \"Quarta-feira\",\n      \"inicio\": \"19:00\",\n      \"fim\": \"22:00\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "08. POST /turmas - dados inválidos (PRINT 06) -> 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/turmas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "turmas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cursoId\": \"\",\n  \"inicio\": null,\n  \"fim\": null,\n  \"vagas\": 0,\n  \"status\": \"INVALIDA\",\n  \"horarios\": [\n    {\n      \"diaSemana\": \"\",\n      \"inicio\": \"25:00\",\n      \"fim\": \"99:99\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "09. POST /turmas - criar turma B (sem print) -> 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/turmas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "turmas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"68f1a0000000000000000021\",\n  \"cursoId\": \"68f1a0000000000000000001\",\n  \"instrutorId\": \"68f1a0000000000000000003\",\n  \"inicio\": \"2026-08-11\",\n  \"fim\": \"2026-12-19\",\n  \"vagas\": 35,\n  \"status\": \"ATIVA\",\n  \"horarios\": [\n    {\n      \"diaSemana\": \"Terça-feira\",\n      \"inicio\": \"19:00\",\n      \"fim\": \"22:00\"\n    },\n    {\n      \"diaSemana\": \"Quinta-feira\",\n      \"inicio\": \"19:00\",\n      \"fim\": \"22:00\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "10. POST /turmas - criar turma C (sem print) -> 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/turmas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "turmas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"68f1a0000000000000000022\",\n  \"cursoId\": \"68f1a0000000000000000001\",\n  \"instrutorId\": \"68f1a0000000000000000002\",\n  \"inicio\": \"2026-09-01\",\n  \"fim\": \"2026-12-20\",\n  \"vagas\": 30,\n  \"status\": \"PREVISTA\",\n  \"horarios\": [\n    {\n      \"diaSemana\": \"Sábado\",\n      \"inicio\": \"08:00\",\n      \"fim\": \"12:00\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "11. GET /turmas - listar (PRINT 07) -> 200",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/turmas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "turmas"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "12. PUT /turmas/{id} - atualizar (PRINT 08) -> 200",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/turmas/68f1a0000000000000000020",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "turmas",
+                "68f1a0000000000000000020"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"68f1a0000000000000000020\",\n  \"cursoId\": \"68f1a0000000000000000001\",\n  \"instrutorId\": \"68f1a0000000000000000002\",\n  \"inicio\": \"2026-08-10\",\n  \"fim\": \"2026-12-18\",\n  \"vagas\": 45,\n  \"status\": \"ATIVA\",\n  \"horarios\": [\n    {\n      \"diaSemana\": \"Segunda-feira\",\n      \"inicio\": \"19:00\",\n      \"fim\": \"22:00\"\n    },\n    {\n      \"diaSemana\": \"Quarta-feira\",\n      \"inicio\": \"19:00\",\n      \"fim\": \"22:00\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Matrículas",
+      "item": [
+        {
+          "name": "13. POST /matriculas - criar matrícula (PRINT 09) -> 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/matriculas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "matriculas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"68f1a0000000000000000030\",\n  \"alunoId\": \"68f1a0000000000000000010\",\n  \"turmaId\": \"68f1a0000000000000000020\",\n  \"data\": \"2026-08-05\",\n  \"situacao\": \"ATIVA\",\n  \"notas\": [\n    {\n      \"avaliacao\": \"Prova 1\",\n      \"valor\": 8.5\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "14. POST /matriculas - dados inválidos (PRINT 10) -> 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/matriculas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "matriculas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"alunoId\": \"\",\n  \"turmaId\": \"\",\n  \"data\": null,\n  \"situacao\": \"\",\n  \"notas\": [\n    {\n      \"avaliacao\": \"\",\n      \"valor\": 15\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "15. POST /matriculas - Ana na turma B (sem print) -> 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/matriculas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "matriculas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"68f1a0000000000000000031\",\n  \"alunoId\": \"68f1a0000000000000000011\",\n  \"turmaId\": \"68f1a0000000000000000021\",\n  \"data\": \"2026-08-06\",\n  \"situacao\": \"ATIVA\",\n  \"notas\": [\n    {\n      \"avaliacao\": \"Projeto\",\n      \"valor\": 9.0\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "16. POST /matriculas - Ana na turma C (sem print) -> 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/matriculas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "matriculas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"68f1a0000000000000000032\",\n  \"alunoId\": \"68f1a0000000000000000011\",\n  \"turmaId\": \"68f1a0000000000000000022\",\n  \"data\": \"2026-09-02\",\n  \"situacao\": \"PREVISTA\",\n  \"notas\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "17. GET /matriculas - listar (PRINT 11) -> 200",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/matriculas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "matriculas"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "18. PUT /matriculas/{id} - atualizar (PRINT 12) -> 200",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/matriculas/68f1a0000000000000000030",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "matriculas",
+                "68f1a0000000000000000030"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"68f1a0000000000000000030\",\n  \"alunoId\": \"68f1a0000000000000000010\",\n  \"turmaId\": \"68f1a0000000000000000020\",\n  \"data\": \"2026-08-05\",\n  \"situacao\": \"CONCLUIDA\",\n  \"notas\": [\n    {\n      \"avaliacao\": \"Prova 1\",\n      \"valor\": 8.5\n    },\n    {\n      \"avaliacao\": \"Prova 2\",\n      \"valor\": 9.0\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Exclusões",
+      "item": [
+        {
+          "name": "19. DELETE /matriculas/{id} - excluir (PRINT 13) -> 204",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/matriculas/68f1a0000000000000000032",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "matriculas",
+                "68f1a0000000000000000032"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 204', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "20. DELETE /alunos/{id} - aluno sem matrícula (PRINT 14) -> 204",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/alunos/68f1a0000000000000000012",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "alunos",
+                "68f1a0000000000000000012"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 204', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "21. DELETE /alunos/{id} - aluno com matrícula (PRINT 15) -> 409",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/alunos/68f1a0000000000000000010",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "alunos",
+                "68f1a0000000000000000010"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 409', function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "22. DELETE /turmas/{id} - turma sem matrícula (PRINT 16) -> 204",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/turmas/68f1a0000000000000000022",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "turmas",
+                "68f1a0000000000000000022"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 204', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "23. DELETE /turmas/{id} - turma com matrícula (PRINT 17) -> 409",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/turmas/68f1a0000000000000000020",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "turmas",
+                "68f1a0000000000000000020"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 409', function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Consultas",
+      "item": [
+        {
+          "name": "24. GET /matriculas/aluno/{id} (PRINT 18) -> 200",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/matriculas/aluno/68f1a0000000000000000010",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "matriculas",
+                "aluno",
+                "68f1a0000000000000000010"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "25. GET /matriculas/curso/{id} (PRINT 19) -> 200",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/matriculas/curso/68f1a0000000000000000001",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "matriculas",
+                "curso",
+                "68f1a0000000000000000001"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "26. GET /turmas/curso/{id} (PRINT 20) -> 200",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/turmas/curso/68f1a0000000000000000001",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8888",
+              "path": [
+                "turmas",
+                "curso",
+                "68f1a0000000000000000001"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado: 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

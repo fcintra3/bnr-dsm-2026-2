@@ -1,0 +1,446 @@
+@baseUrl = http://localhost:8888
+
+### 00.1 POST /cursos - criar curso  ->  201
+POST {{baseUrl}}/cursos
+Content-Type: application/json
+
+{
+  "id": "68f1a0000000000000000001",
+  "nome": "Desenvolvimento de Software Multiplataforma",
+  "cargaHoraria": 2000,
+  "valor": 450.0,
+  "modulos": [
+    {
+      "titulo": "Banco de Dados Não Relacional",
+      "conteudo": "Modelagem de documentos e APIs com MongoDB",
+      "cargaHoraria": 80
+    },
+    {
+      "titulo": "Programação Web",
+      "conteudo": "Front-end e back-end",
+      "cargaHoraria": 120
+    }
+  ]
+}
+
+### 00.2 POST /instrutores - criar instrutor Marcos  ->  201
+POST {{baseUrl}}/instrutores
+Content-Type: application/json
+
+{
+  "id": "68f1a0000000000000000002",
+  "nome": "Marcos Vinícius Almeida",
+  "cpf": "11144477735",
+  "telefone": "(16) 98888-1001",
+  "email": "marcos.almeida@exemplo.com",
+  "especialidades": [
+    "MongoDB",
+    "Java",
+    "APIs REST"
+  ],
+  "enderecos": [
+    {
+      "logradouro": "Rua das Palmeiras",
+      "numero": "45",
+      "municipio": "Franca",
+      "uf": "SP",
+      "cep": "14400-100"
+    }
+  ]
+}
+
+### 00.3 POST /instrutores - criar instrutora Patrícia  ->  201
+POST {{baseUrl}}/instrutores
+Content-Type: application/json
+
+{
+  "id": "68f1a0000000000000000003",
+  "nome": "Patrícia Helena Souza",
+  "cpf": "22255588846",
+  "telefone": "(16) 98888-1002",
+  "email": "patricia.souza@exemplo.com",
+  "especialidades": [
+    "Banco de Dados",
+    "Engenharia de Software"
+  ],
+  "enderecos": [
+    {
+      "logradouro": "Avenida Brasil",
+      "numero": "900",
+      "municipio": "Franca",
+      "uf": "SP",
+      "cep": "14401-200"
+    }
+  ]
+}
+
+### 01. POST /alunos - criar aluno (PRINT 01)  ->  201
+POST {{baseUrl}}/alunos
+Content-Type: application/json
+
+{
+  "id": "68f1a0000000000000000010",
+  "nome": "Richard Santos",
+  "cpf": "33366699957",
+  "telefone": "(16) 99123-4567",
+  "email": "richard.santos@exemplo.com",
+  "enderecos": [
+    {
+      "logradouro": "Rua das Acácias",
+      "numero": "120",
+      "municipio": "Franca",
+      "uf": "SP",
+      "cep": "14400-000"
+    },
+    {
+      "logradouro": "Avenida Rio Branco",
+      "numero": "455",
+      "municipio": "Franca",
+      "uf": "SP",
+      "cep": "14405-100"
+    }
+  ]
+}
+
+### 02. POST /alunos - dados inválidos (PRINT 02)  ->  400
+POST {{baseUrl}}/alunos
+Content-Type: application/json
+
+{
+  "nome": "",
+  "cpf": "123",
+  "telefone": "",
+  "email": "email-invalido",
+  "enderecos": [
+    {
+      "logradouro": "",
+      "numero": "",
+      "municipio": "",
+      "uf": "XX1",
+      "cep": "abc"
+    }
+  ]
+}
+
+### 03. POST /alunos - criar Ana (sem print)  ->  201
+POST {{baseUrl}}/alunos
+Content-Type: application/json
+
+{
+  "id": "68f1a0000000000000000011",
+  "nome": "Ana Beatriz Ferreira",
+  "cpf": "44477711107",
+  "telefone": "(16) 99234-5678",
+  "email": "ana.ferreira@exemplo.com",
+  "enderecos": [
+    {
+      "logradouro": "Rua São Paulo",
+      "numero": "78",
+      "municipio": "Batatais",
+      "uf": "SP",
+      "cep": "14300-000"
+    },
+    {
+      "logradouro": "Rua Minas Gerais",
+      "numero": "210",
+      "municipio": "Franca",
+      "uf": "SP",
+      "cep": "14401-200"
+    }
+  ]
+}
+
+### 04. POST /alunos - criar Carlos (sem print)  ->  201
+POST {{baseUrl}}/alunos
+Content-Type: application/json
+
+{
+  "id": "68f1a0000000000000000012",
+  "nome": "Carlos Eduardo Lima",
+  "cpf": "55588822200",
+  "telefone": "(16) 99345-6789",
+  "email": "carlos.lima@exemplo.com",
+  "enderecos": [
+    {
+      "logradouro": "Rua Bahia",
+      "numero": "33",
+      "municipio": "Franca",
+      "uf": "SP",
+      "cep": "14402-300"
+    },
+    {
+      "logradouro": "Rua Goiás",
+      "numero": "14",
+      "municipio": "Franca",
+      "uf": "SP",
+      "cep": "14402-400"
+    }
+  ]
+}
+
+### 05. GET /alunos - listar (PRINT 03)  ->  200
+GET {{baseUrl}}/alunos
+
+### 06. PUT /alunos/{id} - atualizar (PRINT 04)  ->  200
+PUT {{baseUrl}}/alunos/68f1a0000000000000000010
+Content-Type: application/json
+
+{
+  "id": "68f1a0000000000000000010",
+  "nome": "Richard Santos",
+  "cpf": "33366699957",
+  "telefone": "(16) 99777-1234",
+  "email": "richard.santos@exemplo.com",
+  "enderecos": [
+    {
+      "logradouro": "Rua das Acácias",
+      "numero": "120",
+      "municipio": "Franca",
+      "uf": "SP",
+      "cep": "14400-000"
+    },
+    {
+      "logradouro": "Avenida Rio Branco",
+      "numero": "455",
+      "municipio": "Franca",
+      "uf": "SP",
+      "cep": "14405-100"
+    }
+  ]
+}
+
+### 07. POST /turmas - criar turma A (PRINT 05)  ->  201
+POST {{baseUrl}}/turmas
+Content-Type: application/json
+
+{
+  "id": "68f1a0000000000000000020",
+  "cursoId": "68f1a0000000000000000001",
+  "instrutorId": "68f1a0000000000000000002",
+  "inicio": "2026-08-10",
+  "fim": "2026-12-18",
+  "vagas": 40,
+  "status": "ATIVA",
+  "horarios": [
+    {
+      "diaSemana": "Segunda-feira",
+      "inicio": "19:00",
+      "fim": "22:00"
+    },
+    {
+      "diaSemana": "Quarta-feira",
+      "inicio": "19:00",
+      "fim": "22:00"
+    }
+  ]
+}
+
+### 08. POST /turmas - dados inválidos (PRINT 06)  ->  400
+POST {{baseUrl}}/turmas
+Content-Type: application/json
+
+{
+  "cursoId": "",
+  "inicio": null,
+  "fim": null,
+  "vagas": 0,
+  "status": "INVALIDA",
+  "horarios": [
+    {
+      "diaSemana": "",
+      "inicio": "25:00",
+      "fim": "99:99"
+    }
+  ]
+}
+
+### 09. POST /turmas - criar turma B (sem print)  ->  201
+POST {{baseUrl}}/turmas
+Content-Type: application/json
+
+{
+  "id": "68f1a0000000000000000021",
+  "cursoId": "68f1a0000000000000000001",
+  "instrutorId": "68f1a0000000000000000003",
+  "inicio": "2026-08-11",
+  "fim": "2026-12-19",
+  "vagas": 35,
+  "status": "ATIVA",
+  "horarios": [
+    {
+      "diaSemana": "Terça-feira",
+      "inicio": "19:00",
+      "fim": "22:00"
+    },
+    {
+      "diaSemana": "Quinta-feira",
+      "inicio": "19:00",
+      "fim": "22:00"
+    }
+  ]
+}
+
+### 10. POST /turmas - criar turma C (sem print)  ->  201
+POST {{baseUrl}}/turmas
+Content-Type: application/json
+
+{
+  "id": "68f1a0000000000000000022",
+  "cursoId": "68f1a0000000000000000001",
+  "instrutorId": "68f1a0000000000000000002",
+  "inicio": "2026-09-01",
+  "fim": "2026-12-20",
+  "vagas": 30,
+  "status": "PREVISTA",
+  "horarios": [
+    {
+      "diaSemana": "Sábado",
+      "inicio": "08:00",
+      "fim": "12:00"
+    }
+  ]
+}
+
+### 11. GET /turmas - listar (PRINT 07)  ->  200
+GET {{baseUrl}}/turmas
+
+### 12. PUT /turmas/{id} - atualizar (PRINT 08)  ->  200
+PUT {{baseUrl}}/turmas/68f1a0000000000000000020
+Content-Type: application/json
+
+{
+  "id": "68f1a0000000000000000020",
+  "cursoId": "68f1a0000000000000000001",
+  "instrutorId": "68f1a0000000000000000002",
+  "inicio": "2026-08-10",
+  "fim": "2026-12-18",
+  "vagas": 45,
+  "status": "ATIVA",
+  "horarios": [
+    {
+      "diaSemana": "Segunda-feira",
+      "inicio": "19:00",
+      "fim": "22:00"
+    },
+    {
+      "diaSemana": "Quarta-feira",
+      "inicio": "19:00",
+      "fim": "22:00"
+    }
+  ]
+}
+
+### 13. POST /matriculas - criar matrícula (PRINT 09)  ->  201
+POST {{baseUrl}}/matriculas
+Content-Type: application/json
+
+{
+  "id": "68f1a0000000000000000030",
+  "alunoId": "68f1a0000000000000000010",
+  "turmaId": "68f1a0000000000000000020",
+  "data": "2026-08-05",
+  "situacao": "ATIVA",
+  "notas": [
+    {
+      "avaliacao": "Prova 1",
+      "valor": 8.5
+    }
+  ]
+}
+
+### 14. POST /matriculas - dados inválidos (PRINT 10)  ->  400
+POST {{baseUrl}}/matriculas
+Content-Type: application/json
+
+{
+  "alunoId": "",
+  "turmaId": "",
+  "data": null,
+  "situacao": "",
+  "notas": [
+    {
+      "avaliacao": "",
+      "valor": 15
+    }
+  ]
+}
+
+### 15. POST /matriculas - Ana na turma B (sem print)  ->  201
+POST {{baseUrl}}/matriculas
+Content-Type: application/json
+
+{
+  "id": "68f1a0000000000000000031",
+  "alunoId": "68f1a0000000000000000011",
+  "turmaId": "68f1a0000000000000000021",
+  "data": "2026-08-06",
+  "situacao": "ATIVA",
+  "notas": [
+    {
+      "avaliacao": "Projeto",
+      "valor": 9.0
+    }
+  ]
+}
+
+### 16. POST /matriculas - Ana na turma C (sem print)  ->  201
+POST {{baseUrl}}/matriculas
+Content-Type: application/json
+
+{
+  "id": "68f1a0000000000000000032",
+  "alunoId": "68f1a0000000000000000011",
+  "turmaId": "68f1a0000000000000000022",
+  "data": "2026-09-02",
+  "situacao": "PREVISTA",
+  "notas": []
+}
+
+### 17. GET /matriculas - listar (PRINT 11)  ->  200
+GET {{baseUrl}}/matriculas
+
+### 18. PUT /matriculas/{id} - atualizar (PRINT 12)  ->  200
+PUT {{baseUrl}}/matriculas/68f1a0000000000000000030
+Content-Type: application/json
+
+{
+  "id": "68f1a0000000000000000030",
+  "alunoId": "68f1a0000000000000000010",
+  "turmaId": "68f1a0000000000000000020",
+  "data": "2026-08-05",
+  "situacao": "CONCLUIDA",
+  "notas": [
+    {
+      "avaliacao": "Prova 1",
+      "valor": 8.5
+    },
+    {
+      "avaliacao": "Prova 2",
+      "valor": 9.0
+    }
+  ]
+}
+
+### 19. DELETE /matriculas/{id} - excluir (PRINT 13)  ->  204
+DELETE {{baseUrl}}/matriculas/68f1a0000000000000000032
+
+### 20. DELETE /alunos/{id} - aluno sem matrícula (PRINT 14)  ->  204
+DELETE {{baseUrl}}/alunos/68f1a0000000000000000012
+
+### 21. DELETE /alunos/{id} - aluno com matrícula (PRINT 15)  ->  409
+DELETE {{baseUrl}}/alunos/68f1a0000000000000000010
+
+### 22. DELETE /turmas/{id} - turma sem matrícula (PRINT 16)  ->  204
+DELETE {{baseUrl}}/turmas/68f1a0000000000000000022
+
+### 23. DELETE /turmas/{id} - turma com matrícula (PRINT 17)  ->  409
+DELETE {{baseUrl}}/turmas/68f1a0000000000000000020
+
+### 24. GET /matriculas/aluno/{id} (PRINT 18)  ->  200
+GET {{baseUrl}}/matriculas/aluno/68f1a0000000000000000010
+
+### 25. GET /matriculas/curso/{id} (PRINT 19)  ->  200
+GET {{baseUrl}}/matriculas/curso/68f1a0000000000000000001
+
+### 26. GET /turmas/curso/{id} (PRINT 20)  ->  200
+GET {{baseUrl}}/turmas/curso/68f1a0000000000000000001

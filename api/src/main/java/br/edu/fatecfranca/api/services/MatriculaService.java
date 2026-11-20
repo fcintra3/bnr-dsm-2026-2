@@ -12,6 +12,7 @@ import br.edu.fatecfranca.api.dtos.TurmaResponse;
 import br.edu.fatecfranca.api.models.Aluno;
 import br.edu.fatecfranca.api.models.Matricula;
 import br.edu.fatecfranca.api.repositories.AlunoRepository;
+import br.edu.fatecfranca.api.repositories.CursoRepository;
 import br.edu.fatecfranca.api.repositories.MatriculaRepository;
 import br.edu.fatecfranca.api.repositories.TurmaRepository;
 
@@ -21,16 +22,19 @@ public class MatriculaService {
     private final MatriculaRepository repository;
     private final AlunoRepository alunoRepository;
     private final TurmaRepository turmaRepository;
+    private final CursoRepository cursoRepository;
     private final TurmaService turmaService;
 
     public MatriculaService(
             MatriculaRepository repository,
             AlunoRepository alunoRepository,
             TurmaRepository turmaRepository,
+            CursoRepository cursoRepository,
             TurmaService turmaService) {
         this.repository = repository;
         this.alunoRepository = alunoRepository;
         this.turmaRepository = turmaRepository;
+        this.cursoRepository = cursoRepository;
         this.turmaService = turmaService;
     }
 
@@ -59,6 +63,20 @@ public class MatriculaService {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     "Turma não encontrada.");
+        }
+    }
+
+    private void verificarCurso(String cursoId) {
+        if (cursoId == null || cursoId.isBlank()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "O identificador do curso é obrigatório.");
+        }
+
+        if (!cursoRepository.existsById(cursoId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Curso não encontrado.");
         }
     }
 
@@ -104,6 +122,22 @@ public class MatriculaService {
     public List<MatriculaResponse> listarPorTurmaComDetalhes(String turmaId) {
         verificarTurma(turmaId);
         return repository.findByTurmaId(turmaId).stream()
+                .map(this::montarResposta)
+                .toList();
+    }
+
+    public List<MatriculaResponse> listarPorCursoComDetalhes(String cursoId) {
+        verificarCurso(cursoId);
+
+        List<String> turmaIds = turmaRepository.findByCursoId(cursoId).stream()
+                .map(turma -> turma.getId())
+                .toList();
+
+        if (turmaIds.isEmpty()) {
+            return List.of();
+        }
+
+        return repository.findByTurmaIdIn(turmaIds).stream()
                 .map(this::montarResposta)
                 .toList();
     }
