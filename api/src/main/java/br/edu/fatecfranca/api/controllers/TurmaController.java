@@ -18,6 +18,7 @@ import br.edu.fatecfranca.api.models.Turma;
 import br.edu.fatecfranca.api.services.TurmaService;
 import jakarta.validation.Valid;
 
+
 @RestController
 @RequestMapping("/turmas")
 public class TurmaController {
