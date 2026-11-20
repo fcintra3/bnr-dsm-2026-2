@@ -1,7 +1,5 @@
 spring.application.name=api
 
-# Configura a porta da aplicação
 server.port=8888
 
-# Configure a URI do banco escola no arquivo local application.properties.
 spring.mongodb.uri=

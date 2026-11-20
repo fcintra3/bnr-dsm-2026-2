@@ -1,7 +1,6 @@
 {
   "info": {
     "name": "Trabalho 1 - BNR 2026/2",
-    "description": "Sequência de requisições do Trabalho 1. Execute na ordem. Cada item indica o print esperado.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [

@@ -39,8 +39,6 @@ code --install-extension EchoAPI.echoapi-for-vscode
 ```
 
 Para liberar a porta 8888, feche o outro programa que usa essa porta.
-Neste computador, o projeto "Apoio" usa a porta 8888.
-Pare esse projeto antes de iniciar a API da escola.
 
 > Não faça commit do arquivo `application.properties`.
 > Ele contém a senha do banco e já está no `.gitignore`.
@@ -48,6 +46,8 @@ Pare esse projeto antes de iniciar a API da escola.
 ---
 
 ## 3. Iniciar a API
+
+Se a API já estiver em execução, pule esta seção.
 
 Abra um terminal na pasta `api`.
 
@@ -207,7 +207,7 @@ Não corte a barra de endereço, o método, o status e o corpo da resposta.
 
 ## 8. Checklist final
 
-Antes do commit, confirme:
+Confira antes de começar:
 
 - [ ] A API responde em `http://localhost:8888/`.
 - [ ] Os 20 prints estão na pasta `api/PRINTS/`.
@@ -217,42 +217,10 @@ Antes do commit, confirme:
 - [ ] O print 15 mostra status 409.
 - [ ] O print 17 mostra status 409.
 - [ ] Os prints 18, 19 e 20 mostram as listas completas.
-- [ ] O código compila com `.\mvnw.cmd -DskipTests package`.
-- [ ] O arquivo `application.properties` não foi commitado.
 
 ---
 
-## 9. Como o 409 funciona
-
-A exclusão de aluno com matrícula falha com status 409.
-O código está em `AlunoService.java`:
-
-```java
-if (matriculaRepository.existsByAlunoId(id)) {
-    throw new ResponseStatusException(
-            HttpStatus.CONFLICT,
-            "Não é possível excluir um aluno com matrículas vinculadas.");
-}
-```
-
-A exclusão de turma com matrícula segue a mesma regra.
-O código está em `TurmaService.java`:
-
-```java
-if (matriculaRepository.existsByTurmaId(id)) {
-    throw new ResponseStatusException(
-            HttpStatus.CONFLICT,
-            "Não é possível excluir uma turma com matrículas vinculadas.");
-}
-```
-
-O Spring converte `ResponseStatusException` em uma resposta HTTP.
-O status 409 significa **Conflict**.
-A operação não altera o banco.
-
----
-
-## 10. Problemas comuns
+## 9. Problemas comuns
 
 | Problema | Causa | Solução |
 |---|---|---|
@@ -270,27 +238,4 @@ Para limpar o banco e repetir a sequência, execute:
 .\scripts\limpar-banco.ps1
 ```
 
----
 
-## 11. Entrega
-
-Depois dos prints:
-
-```powershell
-git add api
-git commit -m "Trabalho 1: prints e ajustes da API"
-git push origin main
-```
-
-No GitHub:
-
-1. Abra `github.com/richardgsantos2021-maker/bnr-dsm-2026-2`.
-2. Clique em **Pull requests**.
-3. Clique em **New pull request**.
-4. Clique em **Create pull request**.
-5. Use o título **Entrega do Trabalho 1**.
-6. Escreva seu nome completo na descrição.
-7. Clique em **Create pull request**.
-
-Os prints devem ser reais.
-Não use imagens geradas ou editadas.
