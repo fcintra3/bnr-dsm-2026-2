@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.hibernate.validator.constraints.br.CPF;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import org.hibernate.validator.constraints.br.CPF;
+import jakarta.validation.constraints.NotEmpty;
 
 @Document(collection = "alunos")
 public class Aluno {
@@ -24,11 +26,13 @@ public class Aluno {
 
     @NotBlank(message = "O telefone é obrigatório.")
     private String telefone;
-    
+
     @NotBlank(message = "O e-mail é obrigatório.")
-    @Email(message = "O e-mail informado é inválido.")  
+    @Email(message = "O e-mail informado é inválido.")
     private String email;
 
+    @NotEmpty(message = "O aluno deve possuir pelo menos um endereço.")
+    @Valid
     private List<Endereco> enderecos;
 
     // (...código existente...)
