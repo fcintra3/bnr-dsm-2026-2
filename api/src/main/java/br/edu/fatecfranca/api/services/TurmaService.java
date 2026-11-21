@@ -89,7 +89,26 @@ public class TurmaService {
     }
 
     // Excluir turma por ID
+    // public void excluir(String id) {
+    //     repository.deleteById(id);
+    // }
+
     public void excluir(String id) {
-        repository.deleteById(id);
+
+    if (!repository.existsById(id)) {
+        throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Turma não encontrada."
+        );
     }
+
+    if (matriculaRepository.existsByTurmaId(id)) {
+        throw new ResponseStatusException(
+                HttpStatus.CONFLICT,
+                "Não é possível excluir uma turma com matrículas vinculadas."
+        );
+    }
+
+    repository.deleteById(id);
+}
 }

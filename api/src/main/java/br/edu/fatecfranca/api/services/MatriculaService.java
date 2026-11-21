@@ -1,4 +1,3 @@
-
 package br.edu.fatecfranca.api.services;
 
 import java.util.List;
@@ -11,52 +10,72 @@ import org.springframework.web.server.ResponseStatusException;
 import br.edu.fatecfranca.api.models.Matricula;
 import br.edu.fatecfranca.api.repositories.AlunoRepository;
 import br.edu.fatecfranca.api.repositories.MatriculaRepository;
+import br.edu.fatecfranca.api.repositories.TurmaRepository;
 
 @Service
 public class MatriculaService {
 
-   private final MatriculaRepository repository;
-   private final AlunoRepository alunoRepository;
+    private final MatriculaRepository repository;
+    private final AlunoRepository alunoRepository;
+    private final TurmaRepository turmaRepository;
 
-   public MatriculaService(MatriculaRepository repository, AlunoRepository alunoRepository) {
-       this.repository = repository;
-       this.alunoRepository = alunoRepository;
-   }
+    public MatriculaService(
+            MatriculaRepository repository,
+            AlunoRepository alunoRepository,
+            TurmaRepository turmaRepository) {
 
-   private void verificarAluno(String alunoId) {
-       if (alunoId == null || alunoId.isBlank()) {
-           throw new ResponseStatusException(
-                   HttpStatus.BAD_REQUEST,
-                   "O identificador do aluno é obrigatório.");
-       }
+        this.repository = repository;
+        this.alunoRepository = alunoRepository;
+        this.turmaRepository = turmaRepository;
+    }
 
+    private void verificarAluno(String alunoId) {
+        if (alunoId == null || alunoId.isBlank()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "O identificador do aluno é obrigatório.");
+        }
 
-       if (!alunoRepository.existsById(alunoId)) {
-           throw new ResponseStatusException(
-                   HttpStatus.NOT_FOUND,
-                   "Aluno não encontrado.");
-       }
-   }
+        if (!alunoRepository.existsById(alunoId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Aluno não encontrado.");
+        }
+    }
 
-   public List<Matricula> listarTodos() {
-       return repository.findAll();
-   }
+    public List<Matricula> listarTodos() {
+        return repository.findAll();
+    }
 
-   public Optional<Matricula> buscarPorId(String id) {
-       return repository.findById(id);
-   }
+    public Optional<Matricula> buscarPorId(String id) {
+        return repository.findById(id);
+    }
 
-   public List<Matricula> listarPorAluno(String alunoId) {
-       verificarAluno(alunoId);
-       return repository.findByAlunoId(alunoId);
-   }
+    public List<Matricula> listarPorAluno(String alunoId) {
+        verificarAluno(alunoId);
+        return repository.findByAlunoId(alunoId);
+    }
 
-   public Matricula salvar(Matricula matricula) {
-       verificarAluno(matricula.getAlunoId());
-       return repository.save(matricula);
-   }
+    public List<Matricula> listarPorCurso(String cursoId) {
 
-   public void excluir(String id) {
-       repository.deleteById(id);
-   }
+        List<String> turmaIds = turmaRepository.findByCursoId(cursoId)
+                .stream()
+                .map(turma -> turma.getId())
+                .toList();
+
+        if (turmaIds.isEmpty()) {
+            return List.of();
+        }
+
+        return repository.findByTurmaIdIn(turmaIds);
+    }
+
+    public Matricula salvar(Matricula matricula) {
+        verificarAluno(matricula.getAlunoId());
+        return repository.save(matricula);
+    }
+
+    public void excluir(String id) {
+        repository.deleteById(id);
+    }
 }

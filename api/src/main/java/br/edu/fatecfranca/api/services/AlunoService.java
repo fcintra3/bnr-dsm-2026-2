@@ -20,41 +20,41 @@ public class AlunoService {
     private final AlunoRepository repository;
     private final MatriculaRepository matriculaRepository;
 
-
-   public AlunoService(AlunoRepository repository, MatriculaRepository matriculaRepository) {
+    public AlunoService(AlunoRepository repository, MatriculaRepository matriculaRepository) {
         this.repository = repository;
         this.matriculaRepository = matriculaRepository;
 
-   }
+    }
 
-   public List<Aluno> listarTodos() {
-       return repository.findAll();
-   }
+    public List<Aluno> listarTodos() {
+        return repository.findAll();
+    }
 
-   public Optional<Aluno> buscarPorId(String id) {
-       return repository.findById(id);
-   }
+    public Optional<Aluno> buscarPorId(String id) {
+        return repository.findById(id);
+    }
 
-   public Aluno salvar(Aluno aluno) {
-       return repository.save(aluno);
-   }
+    public Aluno salvar(Aluno aluno) {
+        return repository.save(aluno);
+    }
 
-   public void excluir(String id) {
-    if (!repository.existsById(id)) {
-           throw new ResponseStatusException(
-                   HttpStatus.NOT_FOUND,
-                   "Aluno não encontrado.");
-       }
+    public void excluir(String id) {
+        if (!repository.existsById(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Aluno não encontrado.");
+        }
 
+        if (matriculaRepository.existsByAlunoId(id)) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Não é possível excluir um aluno com matrículas vinculadas.");
+        }
 
-       if (matriculaRepository.existsByAlunoId(id)) {
-           throw new ResponseStatusException(
-                   HttpStatus.CONFLICT,
-                   "Não é possível excluir um aluno com matrículas vinculadas.");
-       }
-   }
+        repository.deleteById(id);
+    }
 
-   public List<Matricula> listarPorAluno(String alunoId) {
-    return matriculaRepository.findByAlunoId(alunoId);
-}
+    public List<Matricula> listarPorAluno(String alunoId) {
+        return matriculaRepository.findByAlunoId(alunoId);
+    }
 }

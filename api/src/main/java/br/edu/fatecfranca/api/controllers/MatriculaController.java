@@ -4,6 +4,8 @@ package br.edu.fatecfranca.api.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,14 +42,24 @@ public class MatriculaController {
 
     @GetMapping("/aluno/{alunoId}")
     public List<Matricula> listarPorAluno(
-        @PathVariable String alunoId) {
-            return service.listarPorAluno(alunoId);
-   }
+            @PathVariable String alunoId) {
+        return service.listarPorAluno(alunoId);
+    }
+
+    @GetMapping("/curso/{cursoId}")
+    public List<Matricula> listarPorCurso(
+            @PathVariable String cursoId) {
+        return service.listarPorCurso(cursoId);
+    }
 
     // Cadastrar matrícula
     @PostMapping
-    public Matricula salvar(@RequestBody Matricula matricula) {
-        return service.salvar(matricula);
+    public ResponseEntity<Matricula> salvar(@RequestBody Matricula matricula) {
+        Matricula matriculaSalva = service.salvar(matricula);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(matriculaSalva);
     }
 
     // Atualizar matrícula
@@ -61,8 +73,15 @@ public class MatriculaController {
     }
 
     // Excluir matrícula
+    // @DeleteMapping("/{id}")
+    // public void excluir(@PathVariable String id) {
+    // service.excluir(id);
+    // }
+
     @DeleteMapping("/{id}")
-    public void excluir(@PathVariable String id) {
+    public ResponseEntity<Void> excluir(@PathVariable String id) {
         service.excluir(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

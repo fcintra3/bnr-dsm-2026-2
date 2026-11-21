@@ -1,8 +1,8 @@
 package br.edu.fatecfranca.api.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +27,6 @@ public class TurmaController {
         this.service = service;
     }
 
-    // Listar todas as turmas
-
     @GetMapping
     public List<TurmaResponse> listarTodos() {
         return service.listarComDetalhes();
@@ -40,7 +38,6 @@ public class TurmaController {
         return service.listarPorCursoComDetalhes(cursoId);
     }
 
-    // Buscar turma por ID
     @GetMapping("/{id}")
     public ResponseEntity<TurmaResponse> buscarPorId(@PathVariable String id) {
         return service.buscarComDetalhes(id)
@@ -48,25 +45,38 @@ public class TurmaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Cadastrar turma
+    // Cadastrar turma - STATUS 201
     @PostMapping
-    public Turma salvar(@RequestBody Turma turma) {
-        return service.salvar(turma);
+    public ResponseEntity<Turma> salvar(@RequestBody Turma turma) {
+        Turma turmaSalva = service.salvar(turma);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(turmaSalva);
     }
 
-    // Atualizar turma
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<Void> excluir(@PathVariable String id) {
+    //     service.excluir(id);
+    //     return ResponseEntity.noContent().build();
+    // }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable String id) {
+        service.excluir(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/{id}")
-    public Turma atualizar(
+    public ResponseEntity<Turma> atualizar(
             @PathVariable String id,
             @RequestBody Turma turma) {
 
         turma.setId(id);
-        return service.salvar(turma);
-    }
 
-    // Excluir turma
-    @DeleteMapping("/{id}")
-    public void excluir(@PathVariable String id) {
-        service.excluir(id);
+        Turma turmaAtualizada = service.salvar(turma);
+
+        return ResponseEntity.ok(turmaAtualizada);
     }
 }
