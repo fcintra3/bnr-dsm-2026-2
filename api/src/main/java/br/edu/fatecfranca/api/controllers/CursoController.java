@@ -6,11 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import br.edu.fatecfranca.api.models.Curso;
 import br.edu.fatecfranca.api.services.CursoService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/cursos")
 public class CursoController {
-    
+
     private final CursoService service;
 
     public CursoController(CursoService service) {
@@ -30,13 +31,13 @@ public class CursoController {
     }
 
     @PostMapping
-    public ResponseEntity<Curso> criar(@RequestBody Curso curso) {
+    public ResponseEntity<Curso> criar(@Valid @RequestBody Curso curso) {
         Curso cursoSalvo = service.salvar(curso);
         return ResponseEntity.status(HttpStatus.CREATED).body(cursoSalvo);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Curso> atualizar(@PathVariable String id, @RequestBody Curso curso) {
+    public ResponseEntity<Curso> atualizar(@PathVariable String id, @Valid @RequestBody Curso curso) {
         if (service.buscarPorId(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -47,9 +48,6 @@ public class CursoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable String id) {
-        if (service.buscarPorId(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
         service.excluir(id);
         return ResponseEntity.noContent().build();
     }

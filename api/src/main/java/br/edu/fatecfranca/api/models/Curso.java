@@ -1,19 +1,34 @@
 package br.edu.fatecfranca.api.models;
 
 import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 @Document(collection = "cursos")
 public class Curso {
-    
+
     @Id
     private String id;
-    private String nome;
-    private Integer cargaHoraria;
-    private Double valor;
-    private List<Modulo> modulos;
 
+    @NotBlank(message = "O nome do curso é obrigatório.")
+    private String nome;
+
+    @NotNull(message = "A carga horária é obrigatória.")
+    @Positive(message = "A carga horária deve ser maior que zero.")
+    private Integer cargaHoraria;
+
+    @NotNull(message = "O valor do curso é obrigatório.")
+    @Positive(message = "O valor do curso deve ser maior que zero.")
+    private Double valor;
+
+    @Valid
+    private List<Modulo> modulos;
     public Curso() {
     }
 
