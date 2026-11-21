@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.fatecfranca.api.dtos.TurmaResponse;
 import br.edu.fatecfranca.api.models.Turma;
 import br.edu.fatecfranca.api.services.TurmaService;
-
 import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/turmas")

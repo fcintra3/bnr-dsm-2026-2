@@ -7,8 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import br.edu.fatecfranca.api.dtos.MatriculaResponse;
+
+import br.edu.fatecfranca.api.models.Aluno;
 import br.edu.fatecfranca.api.models.Matricula;
+import br.edu.fatecfranca.api.models.Turma;
 import br.edu.fatecfranca.api.repositories.AlunoRepository;
+import br.edu.fatecfranca.api.repositories.CursoRepository;
 import br.edu.fatecfranca.api.repositories.MatriculaRepository;
 import br.edu.fatecfranca.api.repositories.TurmaRepository;
 
@@ -18,12 +23,80 @@ public class MatriculaService {
     private final MatriculaRepository repository;
     private final AlunoRepository alunoRepository;
     private final TurmaRepository turmaRepository;
+    private final CursoRepository cursoRepository;
 
     public MatriculaService(MatriculaRepository repository, AlunoRepository alunoRepository,
-            TurmaRepository turmaRepository) {
+            TurmaRepository turmaRepository, CursoRepository cursoRepository) {
         this.repository = repository;
         this.alunoRepository = alunoRepository;
         this.turmaRepository = turmaRepository;
+        this.cursoRepository = cursoRepository;
+    }
+
+    // Este método monta uma resposta para o GET de /matriculas
+    // incluindo os dados de aluno e turma
+    private MatriculaResponse montarResposta(Matricula matricula) {
+        Aluno aluno = alunoRepository.findById(matricula.getAlunoId())
+                .orElse(null);
+
+        Turma turma = turmaRepository.findById(matricula.getTurmaId())
+                .orElse(null);
+
+        return new MatriculaResponse(
+                matricula.getId(),
+                matricula.getAlunoId(),
+                matricula.getTurmaId(),
+                matricula.getData(),
+                matricula.getSituacao(),
+                matricula.getNotas(),
+                aluno,
+                turma);
+    }
+
+    public List<MatriculaResponse> listarComDetalhes() {
+        return repository.findAll().stream()
+                .map(this::montarResposta)
+                .toList();
+    }
+
+    public Optional<MatriculaResponse> buscarComDetalhes(String id) {
+        return repository.findById(id)
+                .map(this::montarResposta);
+    }
+
+    public List<MatriculaResponse> listarPorAlunoComDetalhes(String alunoId) {
+        return listarPorAluno(alunoId).stream()
+                .map(this::montarResposta)
+                .toList();
+    }
+
+    public List<MatriculaResponse> listarPorTurmaComDetalhes(String turmaId) {
+        return listarPorTurma(turmaId).stream()
+                .map(this::montarResposta)
+                .toList();
+    }
+
+    public List<MatriculaResponse> listarPorCursoComDetalhes(String cursoId) {
+        verificarCurso(cursoId);
+
+        // As matrículas se ligam ao curso por meio das turmas do curso
+        List<String> turmaIds = turmaRepository.findByCursoId(cursoId).stream()
+                .map(Turma::getId)
+                .toList();
+
+        return repository.findByTurmaIdIn(turmaIds).stream()
+                .map(this::montarResposta)
+                .toList();
+    }
+
+    private void verificarCurso(String cursoId) {
+        if (cursoId == null || cursoId.isBlank()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "O identificador do curso é obrigatório.");
+        }
+        if (!cursoRepository.existsById(cursoId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso não encontrado.");
+        }
     }
 
     private void verificarTurma(String turmaId) {

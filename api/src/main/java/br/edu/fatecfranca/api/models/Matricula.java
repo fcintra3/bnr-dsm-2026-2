@@ -6,20 +6,33 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
 @Document(collection = "matriculas")
 public class Matricula {
 
     @Id
     private String id;
 
+    @NotBlank(message = "O identificador do aluno é obrigatório.")
     private String alunoId;
 
+    @NotBlank(message = "O identificador da turma é obrigatório.")
     private String turmaId;
 
+    @NotNull(message = "A data da matrícula é obrigatória.")
     private LocalDate data;
 
+    @NotBlank(message = "A situação é obrigatória.")
+    @Pattern(
+            regexp = "(?i)ativa|conclu[ií]da|cancelada",
+            message = "A situação deve ser ativa, concluída ou cancelada.")
     private String situacao;
 
+    @Valid
     private List<Nota> notas;
 
     public Matricula() {
