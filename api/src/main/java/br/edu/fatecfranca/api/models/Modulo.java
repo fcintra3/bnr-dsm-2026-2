@@ -7,38 +7,45 @@ import jakarta.validation.constraints.Positive;
 public class Modulo {
 
     @NotBlank(message = "O título do módulo é obrigatório.")
-    private String titulo; 
+    private String titulo;
 
     @NotBlank(message = "A descrição do módulo é obrigatória.")
-    private String descricao; 
+    private String descricao;
 
     @NotNull(message = "A carga horária do módulo é obrigatória.")
     @Positive(message = "A carga horária deve ser maior que zero.")
     private Integer cargaHoraria;
-    private String nome;
-    private String conteudo;
 
     public Modulo() {
     }
 
-    public Modulo(String nome, String conteudo) {
-        this.nome = nome;
-        this.conteudo = conteudo;
+    public Modulo(String titulo, String descricao, Integer cargaHoraria) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.cargaHoraria = cargaHoraria;
     }
 
-    public String getNome() {
-        return nome;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
-    public String getConteudo() {
-        return conteudo;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setConteudo(String conteudo) {
-        this.conteudo = conteudo;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Integer getCargaHoraria() {
+        return cargaHoraria;
+    }
+
+    public void setCargaHoraria(Integer cargaHoraria) {
+        this.cargaHoraria = cargaHoraria;
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import br.edu.fatecfranca.api.models.Matricula;
 
 public interface MatriculaRepository extends MongoRepository<Matricula, String> {
+    List<Matricula> findByTurmaIdIn(List<String> turmaIds);
     List<Matricula> findByAlunoId(String alunoId);
     boolean existsByAlunoId(String alunoId);
 

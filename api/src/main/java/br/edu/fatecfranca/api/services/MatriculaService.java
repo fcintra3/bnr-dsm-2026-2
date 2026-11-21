@@ -10,6 +10,7 @@ import br.edu.fatecfranca.api.models.Aluno;
 import br.edu.fatecfranca.api.models.Matricula;
 import br.edu.fatecfranca.api.models.Turma;
 import br.edu.fatecfranca.api.repositories.AlunoRepository;
+import br.edu.fatecfranca.api.repositories.CursoRepository;
 import br.edu.fatecfranca.api.repositories.MatriculaRepository;
 import br.edu.fatecfranca.api.repositories.TurmaRepository;
 
@@ -19,15 +20,18 @@ public class MatriculaService {
     private final MatriculaRepository matriculaRepository;
     private final AlunoRepository alunoRepository;
     private final TurmaRepository turmaRepository;
+    private final CursoRepository cursoRepository;
 
     public MatriculaService(
         MatriculaRepository matriculaRepository,
         AlunoRepository alunoRepository,
-        TurmaRepository turmaRepository
+        TurmaRepository turmaRepository,
+        CursoRepository cursoRepository
     ) {
         this.matriculaRepository = matriculaRepository;
         this.alunoRepository = alunoRepository;
         this.turmaRepository = turmaRepository;
+        this.cursoRepository = cursoRepository;
     }
 
     private MatriculaResponse converterParaResponse(Matricula matricula) {
@@ -67,6 +71,31 @@ public class MatriculaService {
         if (!turmaRepository.existsById(turmaId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Turma inexistente.");
         }
+    }
+
+    public List<MatriculaResponse> listarPorCursoComDetalhes(String cursoId) {
+        if (cursoId == null || cursoId.isBlank()) {
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "O identificador do curso é obrigatório."
+            );
+        }
+        if (!cursoRepository.existsById(cursoId)) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Curso não encontrado."
+            );
+        }
+
+        List<String> turmaIds = turmaRepository.findByCursoId(cursoId)
+            .stream()
+            .map(Turma::getId)
+            .toList();
+
+        return matriculaRepository.findByTurmaIdIn(turmaIds)
+            .stream()
+            .map(this::converterParaResponse)
+            .toList();
     }
 
     public List<Matricula> listarTodos() {

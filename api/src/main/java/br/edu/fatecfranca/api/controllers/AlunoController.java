@@ -78,8 +78,14 @@ public class AlunoController {
    
           return ResponseEntity.ok(alunoAtualizado);
       }
+      
    
    
+      public String getId() {
+        return id;
+    }
+
+
       @DeleteMapping("/{id}")
 public ResponseEntity<Void> excluir(@PathVariable String id) {
     service.excluir(id);
