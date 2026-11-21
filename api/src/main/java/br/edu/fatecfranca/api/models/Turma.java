@@ -138,4 +138,11 @@ public class Turma {
     public void setHorarios(List<Horario> horarios) {
         this.horarios = horarios;
     }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

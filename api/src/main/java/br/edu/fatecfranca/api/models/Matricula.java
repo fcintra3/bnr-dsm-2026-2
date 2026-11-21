@@ -92,4 +92,11 @@ public class Matricula {
     public void setNotas(List<Nota> notas) {
          this.notas = notas;
          }
+    public String getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
+    }
 }
